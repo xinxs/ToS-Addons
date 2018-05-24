@@ -4,7 +4,7 @@
 		"file" : "joyinputswitch",
 		"extension" : "ipf",
 		"fileVersion" : "v1.0.2",
-		"releaseTag" : "revised",
+		"releaseTag" : "fix",
 		"unicode" : "⛄",
 		"description" : "Modified version of axjv's input switcher. Now you can toggle between mouse, keyboard and CONTROLLER mode.",
 		"tags" : [
