@@ -1,4 +1,4 @@
-﻿# Inputswitch Joystick
+# Inputswitch Joystick
 
 Inputswitch with support for joystick (all thanks to axjv for the base code).
 
