@@ -33,3 +33,4 @@ function inputSwitch_parse(command)
     end
     return ui.SysMsg('Type /inputswitch kb to enable keyboard, /inputswitch mouse to enable mouse, /inputswitch ct to enable controller, or /inputswitch toggle to toggle.')
 end
+
