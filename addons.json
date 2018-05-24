@@ -1,7 +1,7 @@
-[
+﻿[
 	{
 		"name" : "Inputswitch Joystick",
-		"file" : "joyinputswitch",
+		"file" : "inputswitchjoy",
 		"extension" : "ipf",
 		"fileVersion" : "v1.0.2",
 		"releaseTag" : "fix",

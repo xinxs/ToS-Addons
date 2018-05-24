@@ -1,7 +1,7 @@
 local acutil = require('acutil');
 
 ui.SysMsg("Input switch loaded! To use, type /inputswitch.")
-function JOYINPUTSWITCH_ON_INIT(addon, frame)
+function INPUTSWITCHJOY_ON_INIT(addon, frame)
     acutil.slashCommand('/inputswitch',inputSwitch_parse);
 end
 
