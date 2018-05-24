@@ -6,7 +6,7 @@
 		"fileVersion" : "v1.2.0",
 		"releaseTag" : "fix",
 		"unicode" : "⛄",
-		"description" : "Modified version of axjv's input switcher. Now you can toggle between mouse, keyboard and CONTROLLER mode.",
+		"description" : "Modified version of axjv's input switcher. Now you can toggle between mouse, keyboard and CONTROLLER mode. **For now I can't do this install by addon manager (working on fix), but you still can download the ipf file on my github page and manual copy to tos folder.",
 		"tags" : [
 			"input",
 			"keyboard",
