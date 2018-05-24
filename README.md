@@ -1,5 +1,5 @@
 # Tos Addons by xinxs.
 
-#Inputswitch Joystick
+# Inputswitch Joystick
 /inputswitch for command list
 
