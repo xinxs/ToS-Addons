@@ -1,4 +1,4 @@
-# Input Switch Joystick
+﻿# Inputswitch Joystick
 
 Inputswitch with support for joystick (all thanks to axjv for the base code).
 
@@ -9,4 +9,3 @@ Inputswitch with support for joystick (all thanks to axjv for the base code).
 /inputswitch ct for controler mode
 
 Note: DONT WORK with axjv's input switcher, you need uninstall it first.
-

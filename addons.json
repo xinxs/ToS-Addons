@@ -1,10 +1,10 @@
-[
+﻿[
 	{
 		"name" : "Inputswitch Joystick",
-		"file" : "inputswitchjoy",
+		"file" : "joyinputswitch",
 		"extension" : "ipf",
-		"fileVersion" : "v1.0.1",
-		"releaseTag" : "version1",
+		"fileVersion" : "v1.0.2",
+		"releaseTag" : "revised",
 		"unicode" : "⛄",
 		"description" : "Modified version of axjv's input switcher. Now you can toggle between mouse, keyboard and CONTROLLER mode.",
 		"tags" : [
