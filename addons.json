@@ -16,7 +16,7 @@
 			]
 	},
 	{
-		"name" : "Autosave money",
+		"name" : "Autosavemoney Rebuild",
 		"file" : "autosavemoney",
 		"extension" : "ipf",
 		"fileVersion" : "v1.2.87",
