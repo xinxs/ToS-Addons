@@ -1,4 +1,4 @@
-[
+﻿[
 	{
 		"name" : "Inputswitch Joystick",
 		"file" : "inputswitchjoy",
@@ -13,6 +13,19 @@
 			"mouse",
 			"controller",
 			"joystick"
+			]
+	},
+	{
+		"name" : "Autosave money",
+		"file" : "autosavemoney",
+		"extension" : "ipf",
+		"fileVersion" : "v1.2.87",
+		"releaseTag" : "autosavemoney",
+		"unicode" : "⛄",
+		"description" : "Autosave Money by chicori, fixed for Re:Build and Eng translated.",
+		"tags" : [
+			"ui",
+			"warehouse"
 			]
 	}
 ]
