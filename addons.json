@@ -14,20 +14,6 @@
 			"controller",
 			"joystick"
 			]
-	},
-	{
-		"name" : "Autosavemoney Rebuild",
-		"file" : "autosavemoney",
-		"extension" : "ipf",
-		"fileVersion" : "v1.2.87",
-		"releaseTag" : "autosavemoneyrebuild",
-		"unicode" : "⛄",
-		"description" : "Autosavemoney by chicori, fixed for Re:build and Eng translated"
-		"tags" : [
-			"ui",
-			"warehouse",
-			"deposit"
-			]
 	}
 ]
 
