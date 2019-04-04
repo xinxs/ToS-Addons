@@ -1,4 +1,4 @@
-[
+﻿[
 	{
 		"name" : "Inputswitch Joystick",
 		"file" : "inputswitchjoy",
@@ -26,6 +26,20 @@
 		"tags" : [
 			"ui",
 			"warehouse"
+			]
+	},
+	{
+		"name" : "Pokelua Rebuild",
+		"file" : "pokelua",
+		"extension" : "ipf",
+		"fileVersion" : "v1.0.2",
+		"releaseTag" : "pokelua2",
+		"unicode" : "⛄",
+		"description" : "Updated version of pokelua, now works with gem stone shop.",
+		"tags" : [
+			"Shop",
+			"event",
+			"gemstone"
 			]
 	}
 ]
