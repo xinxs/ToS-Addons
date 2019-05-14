@@ -1,4 +1,4 @@
-﻿[
+[
 	{
 		"name" : "Inputswitch Joystick",
 		"file" : "inputswitchjoy",
@@ -29,13 +29,13 @@
 			]
 	},
 	{
-		"name" : "Pokelua Rebuild",
+		"name" : "Pokelua Ep11",
 		"file" : "pokelua",
 		"extension" : "ipf",
-		"fileVersion" : "v1.0.2",
-		"releaseTag" : "pokelua2",
+		"fileVersion" : "v1.0.3",
+		"releaseTag" : "pokelua3",
 		"unicode" : "⛄",
-		"description" : "Updated version of pokelua, now works with gem stone shop.",
+		"description" : "Updated version of pokelua, Ep11 Sprout shop added.",
 		"tags" : [
 			"Shop",
 			"event",
