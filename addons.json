@@ -41,6 +41,20 @@
 			"event",
 			"gemstone"
 			]
-	}
+	},
+	{
+		"name" : "Alchemist Calculator",
+		"file" : "alchcalc",
+		"extension" : "ipf",
+		"fileVersion" : "v1.0.1",
+		"releaseTag" : "alchcalc",
+		"unicode" : "⛄",
+		"description" : "Simple calculator for lazy merchants.",
+		"tags" : [
+			"alchemist",
+			"alch",
+			"calculator"
+			]
+	} 
 ]
 
