@@ -74,6 +74,11 @@ end
 
 function POKELUA_ON_EARTH_TOWER_SHOP_EXEC(parent, ctrl)
 	local hideshop = true;
+	local frame = parent:GetTopParentFrame();
+    if frame:GetName() == 'legend_craft' then
+        LEGEND_CRAFT_EXECUTE(parent, ctrl);
+        return;
+    end
 
 	local parentcset = ctrl:GetParent();
 
