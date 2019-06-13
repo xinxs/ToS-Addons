@@ -43,6 +43,20 @@
 			]
 	},
 	{
+		"name" : "FPS Savior",
+		"file" : "fpssavior",
+		"extension" : "ipf",
+		"fileVersion" : "v2.0.0",
+		"releaseTag" : "fpssavior",
+		"unicode" : "⛄",
+		"description" : "Updated version of fpssavior",
+		"tags" : [
+			"fps",
+			"graphic",
+			"savior"
+			]
+	},
+	{
 		"name" : "Alchemist Calculator",
 		"file" : "alchcalc",
 		"extension" : "ipf",
