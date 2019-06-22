@@ -1,6 +1,6 @@
 # Autosavemoney Rebuild
 
-Base code by chicori.
+Base code by [Chicori](https://github.com/chicori).
 
 Fixed for RE:build
 
