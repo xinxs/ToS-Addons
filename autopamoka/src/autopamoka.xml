@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uiframe name="autopamoka" x="0" y="0" width="400" height="250">
+	<draw drawnotitlebar="false" drawtitlebar="false"/>
+	<frame title="" fullheight="false" fasthide="true" layout_gravity="left top" margin="100 100 0 0"/>
+	<input moveable="true" hittestframe="true" moveintitlebar="false"/>
+	<layer layerlevel="100"/>
+    <controls>
+		<groupbox name="headerBox" rect="0 0 400 55" margin="0 -15 0 0" layout_gravity="center top" skin="test_socket_topskin" hittest="false"/>
+		<button name="xBtn" rect="0 0 40 40" margin="0 0 25 0" layout_gravity="right top" image="testclose_button" texttooltip="CLOSE" LBtnUpScp="AUTOPAMOKA_FRAME_CLOSE"/>
+		<richtext name="headerText" rect="0 0 500 50" parent="headerBox" margin="0 5 0 0" layout_gravity="center center" caption="{@st43}Auto Pamoka{/}" hittest="false"/>
+	</controls>
+</uiframe>
