@@ -57,6 +57,20 @@
 			]
 	},
 	{
+		"name" : "Auto Pamoka",
+		"file" : "autopamoka",
+		"extension" : "ipf",
+		"fileVersion" : "v1.2.0",
+		"releaseTag" : "autopamoka",
+		"unicode" : "⛄",
+		"description" : "Auto enable pamoka solutions from your quick slot.",
+		"tags" : [
+			"pamoka",
+			"exporb",
+			"alert"
+			]
+	},
+	{
 		"name" : "Alchemist Calculator",
 		"file" : "alchcalc",
 		"extension" : "ipf",
