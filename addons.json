@@ -35,7 +35,7 @@
 		"fileVersion" : "v1.0.4",
 		"releaseTag" : "pokelua4",
 		"unicode" : "⛄",
-		"description" : "Updated version of pokelua, Ep11 Sprout shop added.",
+		"description" : "Not need anymore, uninstall it",
 		"tags" : [
 			"Shop",
 			"event",
@@ -60,10 +60,10 @@
 		"name" : "Auto Pamoka",
 		"file" : "autopamoka",
 		"extension" : "ipf",
-		"fileVersion" : "v1.2.0",
+		"fileVersion" : "v1.2.1",
 		"releaseTag" : "autopamoka",
 		"unicode" : "⛄",
-		"description" : "Auto enable pamoka solutions from your quick slot.",
+		"description" : "Auto enable pamoka(unuecessary now) and Alert function!",
 		"tags" : [
 			"pamoka",
 			"exporb",

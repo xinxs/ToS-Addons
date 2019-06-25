@@ -5,7 +5,7 @@ local g = _G['ADDONS']['AUTOPAMOKA']
 local acutil = require('acutil');
 local addonName = "AutoPamoka";
 local settingsFileLoc = string.format("../addons/%s/settings.json", string.lower(addonName));
-g.settings = {on = 1, alert = 0, map = {}};
+g.settings = {on = 0, alert = 0, map = {}};
 local loaded = false;
 
 function AUTOPAMOKA_LOAD()
@@ -151,7 +151,7 @@ end
 
 function AUTOPAMOKA_ON_INIT(addon, frame)
 	addon:RegisterMsg('GAME_START', 'AUTOPAMOKA_TIMER');
-	addon:RegisterMsg('GAME_START_3SEC', 'AUTOPAMOKA_CHECKMAP');
+	addon:RegisterMsg('GAME_START_3SEC', 'AUTOPAMOKA_TIMER2');
 	acutil.slashCommand('/autopamoka', AUTOPAMOKA_CMD);
 	AUTOPAMOKA_LOAD();
 	AUTOPAMOKA_FRAME_CREATE();
@@ -195,26 +195,33 @@ end
 function AUTOPAMOKA_CHECKMAP()
 	if g.settings.alert == 1 and g.settings.map ~= nil then
 		local sessionmap = session.GetMapName();
+		local invList = session.GetInvItemList();
 		for k, v in pairs(g.settings.map) do
 			if k == sessionmap then
-				local frame = ui.GetFrame('quickslotnexpbar');
-				local found = 0;
-				if config.GetXMLConfig("ControlMode") == 1 then 
-					frame = ui.GetFrame('joystickquickslot');
-				end
-				for i = 0, MAX_QUICKSLOT_CNT - 1 do
-					local quickSlotInfo = quickslot.GetInfoByIndex(i);
-					if tonumber(quickSlotInfo.type) == 699011 then
-						local slot = GET_CHILD_RECURSIVELY(frame, "slot"..i+1, "ui::CSlot");
-						local icon = slot:GetIcon();
-						local iconInfo = icon:GetInfo();
-						if iconInfo:GetImageName() == "icon_item_empty_partis" and icon:GetStringColorTone() ~= "FFFF0000" then
-							found = 1;
-						end
-					end	
-				end
-				if found == 0 then
-					ui.MsgBox("Auto Pamoka{nl}{#FF0000}No empty pamoka found on your quick slot!{/}{nl}Press YES to continue{nl}NO to open settings.","","AUTOPAMOKA_FRAME_OPEN");
+				local foundT = {found = 0};
+				FOR_EACH_INVENTORY(invList, function(invList, invItem, founT)
+					if invItem.type == 699011 then
+							foundT.found = 1;
+					end
+				end, true, foundT);
+				-- local frame = ui.GetFrame('quickslotnexpbar');
+				-- local found = 0;
+				-- if config.GetXMLConfig("ControlMode") == 1 then 
+					-- frame = ui.GetFrame('joystickquickslot');
+				-- end
+				-- for i = 0, MAX_QUICKSLOT_CNT - 1 do
+					-- local quickSlotInfo = quickslot.GetInfoByIndex(i);
+					-- if tonumber(quickSlotInfo.type) == 699011 then
+						-- local slot = GET_CHILD_RECURSIVELY(frame, "slot"..i+1, "ui::CSlot");
+						-- local icon = slot:GetIcon();
+						-- local iconInfo = icon:GetInfo();
+						-- if iconInfo:GetImageName() == "icon_item_empty_partis" and icon:GetStringColorTone() ~= "FFFF0000" then
+							-- found = 1;
+						-- end
+					-- end	
+				-- end
+				if foundT.found == 0 then
+					ui.MsgBox("Auto Pamoka{nl}{#FF0000}No empty pamoka found in your Inventory!{/}{nl}Press YES to continue{nl}NO to open settings.","","AUTOPAMOKA_FRAME_OPEN");
 					return
 				end
 			end
@@ -223,5 +230,13 @@ function AUTOPAMOKA_CHECKMAP()
 end
 
 function AUTOPAMOKA_TIMER()
+	if g.settings.on == 1 then
 	ReserveScript("AUTOPAMOKA_EXEC()", 5);
+	end
+end
+
+function AUTOPAMOKA_TIMER2()
+	if g.settings.alert == 1 then
+	ReserveScript("AUTOPAMOKA_CHECKMAP()", 10);
+	end
 end
