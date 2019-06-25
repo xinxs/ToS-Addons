@@ -1,6 +1,8 @@
 # Auto Pamoka
 
-Auto enable pamoka solutions from your quick slot. Also have an alert function.
+Auto enable pamoka solutions from your quick slot: Not need anymore, since Itos patch 25/06/2019. Keeping this function for now, because of Jtos.
+
+Alert function: Popup an alert if you dont have any pamoka to fill when entering in your selected maps.
 
 ![](https://i.imgur.com/arRZr1U.jpg)   ![](https://i.imgur.com/L2hLy7H.jpg)
 
