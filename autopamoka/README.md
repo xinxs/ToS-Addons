@@ -6,7 +6,7 @@ Alert function: Popup an alert if you dont have any pamoka to fill when entering
 
 ![](https://i.imgur.com/arRZr1U.jpg)   
 
-![](https://i.imgur.com/1Lfz2rY.jpg)
+![](https://i.imgur.com/Zsph8ZX.jpg)
 
 Type /autopamoka to open settings.
 
