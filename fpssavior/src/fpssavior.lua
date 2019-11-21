@@ -1,5 +1,5 @@
 _G["FPSSAVIOR"] = {};
-_G["FPSSAVIOR"]["saviorMode"] = {"{#2D9B27}{ol}High","{#F2F407}{ol}Medium","{#284B7E}{ol}Low","{#532881}{ol}Ultra Low"};
+_G["FPSSAVIOR"]["saviorMode"] = {"{#2D9B27}{ol}HIGH","{#F2F407}{ol}MEDIUM","{#284B7E}{ol}LOW","{#532881}{ol}UltraLOW"};
 local acutil = require("acutil");
 CHAT_SYSTEM("FPS Savior loaded! Help: /fpssavior help");
 
@@ -63,12 +63,28 @@ function FPSSAVIOR_START()
 		
 		saviorText = saviorFrame:CreateOrGetControl("richtext","saviortext",0,0,0,0);
 		saviorText = tolua.cast(saviorText,"ui::CRichText");
-		saviorText:SetGravity(ui.LEFT,ui.CENTER_VERT);
-		saviorText:SetText("{s16}{#D2B02E}{ol}FPS SAVIOR");
-		btnsavior = saviorFrame:CreateOrGetControl('button', 'btn', 0, 0, 100, 20); 
-		btnsavior:SetOffset(0, 40); 
-		btnsavior:SetText("{s16}".._G["FPSSAVIOR"]["saviorMode"][_G["FPSSAVIOR"]["settings"].saviorToggle]);
-		btnsavior:SetEventScript(ui.LBUTTONDOWN, 'FPSSAVIOR_TOGGLE');
+		saviorText:SetGravity(ui.CENTER_HORZ,ui.CENTER_VERT);
+		saviorText:SetText("{s18}".._G["FPSSAVIOR"]["saviorMode"][_G["FPSSAVIOR"]["settings"].saviorToggle]);
+		
+		btnsaviorH = saviorFrame:CreateOrGetControl('button', 'btnh', 0, 0, 25, 20); 
+		btnsaviorH:SetOffset(0, 40); 
+		btnsaviorH:SetText("{s16}{#2D9B27}{ol}H");
+		btnsaviorH:SetEventScript(ui.LBUTTONDOWN, 'FPSSAVIOR_HIGH');
+		
+		btnsaviorM = saviorFrame:CreateOrGetControl('button', 'btnm', 0, 0, 25, 20); 
+		btnsaviorM:SetOffset(25, 40); 
+		btnsaviorM:SetText("{s16}{#F2F407}{ol}M");
+		btnsaviorM:SetEventScript(ui.LBUTTONDOWN, 'FPSSAVIOR_MEDIUM');
+		
+		btnsaviorL = saviorFrame:CreateOrGetControl('button', 'btnl', 0, 0, 25, 20); 
+		btnsaviorL:SetOffset(50, 40); 
+		btnsaviorL:SetText("{s16}{#284B7E}{ol}L");
+		btnsaviorL:SetEventScript(ui.LBUTTONDOWN, 'FPSSAVIOR_LOW');
+
+		btnsaviorUlow = saviorFrame:CreateOrGetControl('button', 'btnul', 0, 0, 25, 20); 
+		btnsaviorUlow:SetOffset(75, 40); 
+		btnsaviorUlow:SetText("{s16}{#532881}{ol}UL");
+		btnsaviorUlow:SetEventScript(ui.LBUTTONDOWN, 'FPSSAVIOR_ULOW');
 	end
 	if not saviorFrame.isDragging then
 		saviorFrame:SetOffset(_G["FPSSAVIOR"]["settings"].displayX, _G["FPSSAVIOR"]["settings"].displayY);
@@ -136,7 +152,7 @@ end
 
 function FPSSAVIOR_SETTEXT()
 	if saviorFrame ~= nil then
-		btnsavior:SetText("{s16}".._G["FPSSAVIOR"]["saviorMode"][_G["FPSSAVIOR"]["settings"].saviorToggle]);
+		saviorText:SetText("{s18}".._G["FPSSAVIOR"]["saviorMode"][_G["FPSSAVIOR"]["settings"].saviorToggle]);
 	end
 end
 
