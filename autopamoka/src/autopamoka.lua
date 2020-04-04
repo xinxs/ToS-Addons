@@ -38,11 +38,12 @@ function AUTOPAMOKA_FRAME_CREATE()
 	local frame = ui.GetFrame('autopamoka');
 	frame:EnableHitTest(1);
 	--enablebox
-	local Enablebox = frame:CreateOrGetControl('checkbox', 'enablebox', 30, 65, 100, 20)
-    Enablebox:SetText("{ol}Enable Auto Pamoka");
-	Enablebox:SetEventScript(ui.LBUTTONUP,"AUTOPAMOKA_SAVEFROMFRAME");
-	local Enableboxchild = GET_CHILD(frame, "enablebox");
-	Enableboxchild:SetCheck(g.settings.on);
+	--local Enablebox = frame:CreateOrGetControl('checkbox', 'enablebox', 30, 65, 100, 20)
+    --Enablebox:SetText("{ol}Enable Auto Pamoka");
+	--Enablebox:SetEventScript(ui.LBUTTONUP,"AUTOPAMOKA_SAVEFROMFRAME");
+	--local Enableboxchild = GET_CHILD(frame, "enablebox");
+	--Enableboxchild:SetCheck(g.settings.on);
+	
 	--alertbox
 	local Alertbox = frame:CreateOrGetControl('checkbox', 'alertbox', 30, 95, 100, 20)
     Alertbox:SetText("{ol}Enable map alert");
@@ -91,17 +92,26 @@ end
 
 function AUTOPAMOKA_SAVEFROMFRAME()
 	local frame = ui.GetFrame('autopamoka');
-	local Enableboxchild = GET_CHILD(frame, "enablebox");
+	--local Enableboxchild = GET_CHILD(frame, "enablebox");
 	local Alertboxchild = GET_CHILD(frame, "alertbox");
-	g.settings.on = Enableboxchild:IsChecked();
+	--g.settings.on = Enableboxchild:IsChecked();
 	g.settings.alert = Alertboxchild:IsChecked();
 	acutil.saveJSON(settingsFileLoc, g.settings);
-	AUTOPAMOKA_EXEC();
+	AUTOPAMOKA_TIMER2();
 end
 
 function AUTOPAMOKA_GETMAPLIST()
 	local mapcnt = GetClassCount('Map');
 	local Mlist = {};
+	Mlist["c_Klaipe"] = {};
+	Mlist["c_Klaipe"].name = "Klaipeda";
+	Mlist["c_Klaipe"].level = 0;
+	Mlist["c_orsha"] = {};
+	Mlist["c_orsha"].name = "Orsha";
+	Mlist["c_orsha"].level = 0;
+	Mlist["c_fedimian"] = {};
+	Mlist["c_fedimian"].name = "Fedimian";
+	Mlist["c_fedimian"].level = 0;
 	for i = 0, mapcnt-1 do
 		local mapcls = GetClassByIndex('Map', i);
 		local classname = mapcls.ClassName;
@@ -150,7 +160,8 @@ function AUTOPAMOKA_DELETESETTING()
 end
 
 function AUTOPAMOKA_ON_INIT(addon, frame)
-	addon:RegisterMsg('GAME_START', 'AUTOPAMOKA_TIMER');
+	--addon:RegisterMsg('GAME_START', 'AUTOPAMOKA_TIMER');
+	g.settings.on = 0;
 	addon:RegisterMsg('GAME_START_3SEC', 'AUTOPAMOKA_TIMER2');
 	acutil.slashCommand('/autopamoka', AUTOPAMOKA_CMD);
 	AUTOPAMOKA_LOAD();
@@ -161,36 +172,36 @@ function AUTOPAMOKA_CMD(command)
 	AUTOPAMOKA_FRAME_OPEN();
 end
 
-function AUTOPAMOKA_EXEC()
-	if g.settings.on == 1 then
-		local frame = ui.GetFrame('quickslotnexpbar');
-		if config.GetXMLConfig("ControlMode") == 1 then 
-			frame = ui.GetFrame('joystickquickslot');
-		end
-		local expOrb = frame:GetUserValue("EXP_ORB_EFFECT"); 
-		for i = 0, MAX_QUICKSLOT_CNT - 1 do
-			local quickSlotInfo = quickslot.GetInfoByIndex(i);
-			if tonumber(quickSlotInfo.type) == 699011 then
-				if tonumber(expOrb) == 0 or expOrb == "None" then
-					local slot = GET_CHILD_RECURSIVELY(frame, "slot"..i+1, "ui::CSlot"); 
-					local icon = slot:GetIcon();
-					local iconInfo = icon:GetInfo();
-					if iconInfo:GetImageName() == "icon_item_empty_partis" then
-						ICON_USE(icon);
-						AUTOPAMOKA_TIMER();
-						return 
-					end
-				else
-					AUTOPAMOKA_TIMER();
-					return 
-				end
-			end
-		end
-		AUTOPAMOKA_TIMER();
-	else 
-	return
-	end
-end
+--function AUTOPAMOKA_EXEC()
+--	if g.settings.on == 1 then
+--		local frame = ui.GetFrame('quickslotnexpbar');
+--		if config.GetXMLConfig("ControlMode") == 1 then 
+--			frame = ui.GetFrame('joystickquickslot');
+--		end
+--		local expOrb = frame:GetUserValue("EXP_ORB_EFFECT"); 
+--		for i = 0, MAX_QUICKSLOT_CNT - 1 do
+--			local quickSlotInfo = quickslot.GetInfoByIndex(i);
+--			if tonumber(quickSlotInfo.type) == 699011 then
+--				if tonumber(expOrb) == 0 or expOrb == "None" then
+--					local slot = GET_CHILD_RECURSIVELY(frame, "slot"..i+1, "ui::CSlot"); 
+--					local icon = slot:GetIcon();
+--					local iconInfo = icon:GetInfo();
+--					if iconInfo:GetImageName() == "icon_item_empty_partis" then
+--						ICON_USE(icon);
+--						AUTOPAMOKA_TIMER();
+--						return 
+--					end
+--				else
+--					AUTOPAMOKA_TIMER();
+--					return 
+--				end
+--			end
+--		end
+--		AUTOPAMOKA_TIMER();
+--	else 
+--	return
+--	end
+--end
 
 function AUTOPAMOKA_CHECKMAP()
 	if g.settings.alert == 1 and g.settings.map ~= nil then
@@ -229,11 +240,11 @@ function AUTOPAMOKA_CHECKMAP()
 	end
 end
 
-function AUTOPAMOKA_TIMER()
-	if g.settings.on == 1 then
-	ReserveScript("AUTOPAMOKA_EXEC()", 5);
-	end
-end
+-- function AUTOPAMOKA_TIMER()
+	-- if g.settings.on == 1 then
+	-- ReserveScript("AUTOPAMOKA_EXEC()", 5);
+	-- end
+-- end
 
 function AUTOPAMOKA_TIMER2()
 	if g.settings.alert == 1 then

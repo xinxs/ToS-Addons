@@ -7,6 +7,6 @@
     <controls>
 		<groupbox name="headerBox" rect="0 0 400 55" margin="0 -15 0 0" layout_gravity="center top" skin="test_socket_topskin" hittest="false"/>
 		<button name="xBtn" rect="0 0 40 40" margin="0 0 25 0" layout_gravity="right top" image="testclose_button" texttooltip="CLOSE" LBtnUpScp="AUTOPAMOKA_FRAME_CLOSE"/>
-		<richtext name="headerText" rect="0 0 500 50" parent="headerBox" margin="0 5 0 0" layout_gravity="center center" caption="{@st43}Auto Pamoka{/}" hittest="false"/>
+		<richtext name="headerText" rect="0 0 500 50" parent="headerBox" margin="0 5 0 0" layout_gravity="center center" caption="{@st43}Auto Pamoka (Alert){/}" hittest="false"/>
 	</controls>
 </uiframe>

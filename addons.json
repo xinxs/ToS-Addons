@@ -57,10 +57,10 @@
 			]
 	},
 	{
-		"name" : "Auto Pamoka",
+		"name" : "Auto Pamoka (Alert)",
 		"file" : "autopamoka",
 		"extension" : "ipf",
-		"fileVersion" : "v1.2.1",
+		"fileVersion" : "v1.2.2",
 		"releaseTag" : "autopamoka",
 		"unicode" : "⛄",
 		"description" : "Auto enable pamoka(unnecessary now) and Alert function!",
