@@ -194,7 +194,7 @@ function UPDATE_DPSMETERALLTIME_GUAGE(frame,groupbox)
 			
 			local finalSkillName = skl.Name;
 			local keyword = TryGetProp(skl,"Keyword","None");
-            keyword = StringSplit(keyword,';');
+			keyword = StringSplit(keyword,';');
 			if table.find(keyword, "pcSummonSkill") > 0 then
 				finalSkillName = DPSMETERALLTIME_CLEANSUMMONSTRING(skl.ClassName);
 			end
