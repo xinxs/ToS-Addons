@@ -138,9 +138,9 @@ function DPSMETERALLTIME_UPDATE_DPS(frame)
                         break;
                     end
                 end
-                if table.find(keyword, "pcSummonSkill") > 0 then
-                    sklID = 163915
-                end
+                --if table.find(keyword, "pcSummonSkill") > 0 then
+                 --   sklID = 163915
+                --end
                 --update gauge damage info
                 local function getIndex(table, val)
                     for i=1,#table do
@@ -191,7 +191,15 @@ function UPDATE_DPSMETERALLTIME_GUAGE(frame,groupbox)
             point = DivForBigNumberInt64(point,maxDamage)
             local skin = 'gauge_damage_meter_0'..math.min(i,4)
             damage = font..STR_KILO_CHANGE(damage)
-            DPSMETERALLTIME_GAUGE_SET(ctrlSet,font..skl.Name,point,font..damage,skin);
+			
+			local finalSkillName = skl.Name;
+			local keyword = TryGetProp(skl,"Keyword","None");
+            keyword = StringSplit(keyword,';');
+			if table.find(keyword, "pcSummonSkill") > 0 then
+				finalSkillName = DPSMETERALLTIME_CLEANSUMMONSTRING(skl.ClassName);
+			end
+			
+            DPSMETERALLTIME_GAUGE_SET(ctrlSet,font..finalSkillName,point,font..damage,skin);
         end
     end
 end
@@ -204,6 +212,25 @@ function DPSMETERALLTIME_GAUGE_APPEND(frame,groupbox, index)
         groupbox:Resize(groupbox:GetWidth(),groupbox:GetHeight()+height)
     end
     return ctrlSet
+end
+
+function DPSMETERALLTIME_CLEANSUMMONSTRING(summonskill)
+	summonskill = string.gsub(summonskill, "Mon_pc_summon_", "");
+	summonskill = string.gsub(summonskill, "Mon_pcskill_", "");
+	summonskill = string.gsub(summonskill, "boss_", "");
+	summonskill = string.gsub(summonskill, "Mon_", "");
+	summonskill = string.gsub(summonskill, "shogogoth", "Shoggoth");
+	summonskill = string.gsub(summonskill, "Saloon", "Salamion");
+	summonskill = string.gsub(summonskill, "skullarcher", "SkullArcher");
+	summonskill = string.gsub(summonskill, "skullwizard", "SkullWizard");
+	summonskill = string.gsub(summonskill, "bone", "BonePointing");
+	summonskill = string.gsub(summonskill, "Zawra", "Zaura");
+	summonskill = string.gsub(summonskill, "froster_lord", "FrosterLord");
+	summonskill = string.gsub(summonskill, "Marnoks", "Marnox");
+	summonskill = string.gsub(summonskill, "lecifer", "Rexipher");
+	summonskill = string.gsub(summonskill, "SwordBallista", "Gorkas");
+	summonskill = string.gsub(summonskill, "_", " ");
+	return summonskill;
 end
 
 
