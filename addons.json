@@ -88,7 +88,7 @@
 		"name" : "Damage Meter All Time",
 		"file" : "dpsmeteralltime",
 		"extension" : "ipf",
-		"fileVersion" : "v1.0.0",
+		"fileVersion" : "v1.1.0",
 		"releaseTag" : "dpsmeteralltime",
 		"unicode" : "⛄",
 		"description" : "A dps meter, based on IMC's weekly boss damage meter",
