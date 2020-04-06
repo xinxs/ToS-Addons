@@ -6,4 +6,5 @@ A dps meter, based on IMC's weekly boss damage meter:
 
 # v1.1.0
 Fixed a little bug in the gauge.
+
 Better support for summoners. Thank you very much Sadlion.
