@@ -11,6 +11,8 @@ g.settings = {x = 500, y = 50, mini = 0, skillN = 10};
 local loaded = false;
 local isON = false;
 local damage_meter_info_total = {}
+local mnl, mncnt = GetClassList("Monster")
+local sklL,skcnt = GetClassList("Skill")
 
 function DPSMETERALLTIME_LOAD()
   if loaded == true then return end
@@ -21,6 +23,15 @@ function DPSMETERALLTIME_LOAD()
   end
 end
 
+local function getIndex(table, val)
+	for i=1,#table do
+		if table[i][1] == val then 
+			return i
+		end
+	end
+	return #table+1
+end
+
 function DPSMETERALLTIME_ON_INIT(addon, frame)
 	DPSMETERALLTIME_LOAD()
     addon:RegisterMsg('GAME_START', 'DPSMETERALLTIME_UI_OPEN');
@@ -29,6 +40,7 @@ function DPSMETERALLTIME_ON_INIT(addon, frame)
 	acutil.slashCommand('/dmat', DPSMETERALLTIME_CMD);
 	acutil.slashCommand('/DMAT', DPSMETERALLTIME_CMD);
 end
+
 function DPSMETERALLTIME_CMD()
 	local frame = ui.GetFrame('dpsmeteralltime')
 	if frame:IsVisible() == 1 then
@@ -38,6 +50,7 @@ function DPSMETERALLTIME_CMD()
 		DPSMETERALLTIME_UI_OPEN(frame)
 	end
 end
+
 function DPSMETERALLTIME_CHECK()
 	local frame = ui.GetFrame('dpsmeteralltime')
     frame:StopUpdateScript("DPSMETERALLTIME_UPDATE_DPS")
@@ -126,10 +139,10 @@ function DPSMETERALLTIME_UPDATE_DPS(frame)
 
     for i = idx, cnt - 1 do
         local info = session.dps.Get_alldpsInfoByIndex(i)
-            local damage = info:GetStrDamage();
-            if damage ~= '0' then
-                local sklID = info:GetSkillID();
-                local sklCls = GetClassByType("Skill",sklID)
+        local damage = info:GetStrDamage()
+		local sklID = info:GetSkillID()
+        local sklCls = GetClassByType("Skill",sklID)
+            if damage ~= '0' and sklCls ~= nil then
                 local keyword = TryGetProp(sklCls,"Keyword","None")
                 keyword = StringSplit(keyword,';')
                 for i = 1,#keyword do
@@ -138,20 +151,6 @@ function DPSMETERALLTIME_UPDATE_DPS(frame)
                         break;
                     end
                 end
-                if table.find(keyword, "pcSummonSkill") > 0 then
-                    sklID = 163915
-                end
-                --update gauge damage info
-                local function getIndex(table, val)
-                    for i=1,#table do
-                    if table[i][1] == val then 
-                        return i
-                    end
-                    end
-                    return #table+1
-                end
-
-                --add damage info
                 local info_idx = getIndex(damage_meter_info_total,sklID)
                 if damage_meter_info_total[info_idx] == nil then
                     damage_meter_info_total[info_idx] = {sklID,damage}
@@ -191,9 +190,43 @@ function UPDATE_DPSMETERALLTIME_GUAGE(frame,groupbox)
             point = DivForBigNumberInt64(point,maxDamage)
             local skin = 'gauge_damage_meter_0'..math.min(i,4)
             damage = font..STR_KILO_CHANGE(damage)
-            DPSMETERALLTIME_GAUGE_SET(ctrlSet,font..skl.Name,point,font..damage,skin);
+			
+			local finalSkillName = skl.Name;
+
+			local kw = TryGetProp(skl, "Keyword", "None")
+			if table.find(StringSplit(kw, ';'), "pcSummonSkill") > 0 then
+					local strpcls = StringSplit(skl.ClassName:gsub("^Mon_", ""):gsub("_Skill_([0-9])$", " %1"), " ")
+					finalSkillName = DPSMETERALLTIME_BETTERFINDCORRECTNAME(strpcls, skl)
+			end
+
+            DPSMETERALLTIME_GAUGE_SET(ctrlSet,font..finalSkillName,point,font..damage,skin);
         end
     end
+end
+--thanks Sadlion
+function DPSMETERALLTIME_BETTERFINDCORRECTNAME(args, skl)
+    local clsnm, lv = table.unpack(args)
+    local monClsFromSkl = clsnm
+    if monClsFromSkl ~= nil then
+        if monClsFromSkl:find("skill_basic") ~= nil then
+            return GetClassByNameFromList(sklL, "Mon_pc_summon_skill_basic_Skill_1").Name
+        elseif monClsFromSkl:find("werewolf") ~= nil then
+            local wwfCls = GetClassByNameFromList(sklL, "Druid_Lycanthropy")
+            return string.format("[%s] %s", wwfCls.Name, skl.Name)
+        elseif monClsFromSkl:find("deadparts") ~= nil then
+            return "Corpse Parts" --trying to find better way, there's none
+        elseif monClsFromSkl:find("Corpse_Flower") ~= nil then
+            monClsFromSkl = "pcskill_Corpse_Flower_green"
+        elseif monClsFromSkl:find("Ignas") ~= nil then
+            monClsFromSkl = "Pc_summon_Legend_card_Ignas"
+        end
+    end
+    local monCls = GetClassByNameFromList(mnl, monClsFromSkl)
+                   or GetClassByNameFromList(mnl, monClsFromSkl:gsub("pc_summon_", "pc_summon_boss_"))
+                   or GetClassByNameFromList(mnl, monClsFromSkl:gsub("pc_summon_", "pcskill_"))
+    local prefix = monClsFromSkl:find("_summon_") and string.format("[%s] ", ClMsg("grimoire")) or ""
+    local suffix = tonumber(lv) > 0 and string.format("%s %d", ClMsg("Attack"), lv) or ""
+    return string.format("%s%s %s", prefix, monCls.Name, suffix)
 end
 
 function DPSMETERALLTIME_GAUGE_APPEND(frame,groupbox, index)
