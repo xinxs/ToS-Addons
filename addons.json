@@ -97,7 +97,8 @@
 			"dps",
 			"meter",
 			"dpsmeter",
-			"damagemeter"
+			"damagemeter",
+			"dmat"
 			]
 	}	
 ]
