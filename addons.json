@@ -93,7 +93,7 @@
 		"unicode" : "⛄",
 		"description" : "A dps meter, based on IMC's weekly boss damage meter",
 		"tags" : [
-			"damge",
+			"damage",
 			"dps",
 			"meter",
 			"dpsmeter",
