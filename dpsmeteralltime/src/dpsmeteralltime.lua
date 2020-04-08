@@ -140,10 +140,10 @@ function DPSMETERALLTIME_UPDATE_DPS(frame)
     for i = idx, cnt - 1 do
         local info = session.dps.Get_alldpsInfoByIndex(i)
         local damage = info:GetStrDamage()
-		local sklID = info:GetSkillID()
+	local sklID = info:GetSkillID()
         local sklCls = GetClassByType("Skill",sklID)
-            if damage ~= '0' and sklCls ~= nil then
-                local keyword = TryGetProp(sklCls,"Keyword","None")
+        if damage ~= '0' and sklCls ~= nil then
+        	local keyword = TryGetProp(sklCls,"Keyword","None")
                 keyword = StringSplit(keyword,';')
                 for i = 1,#keyword do
                     if keyword[i] == 'NormalSkill' then
@@ -159,7 +159,7 @@ function DPSMETERALLTIME_UPDATE_DPS(frame)
                 end
 
                 totalDamage = SumForBigNumberInt64(damage,totalDamage)
-            end
+       end
     end
     table.sort(damage_meter_info_total,function(a,b) return IsGreaterThanForBigNumber(a[2],b[2])==1 end)
     frame:SetUserValue("DPSINFO_INDEX",cnt)
