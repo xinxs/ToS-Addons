@@ -29,20 +29,6 @@
 			]
 	},
 	{
-		"name" : "Pokelua Ep11",
-		"file" : "pokelua",
-		"extension" : "ipf",
-		"fileVersion" : "v1.0.4",
-		"releaseTag" : "pokelua4",
-		"unicode" : "⛄",
-		"description" : "Not need anymore, uninstall it",
-		"tags" : [
-			"Shop",
-			"event",
-			"gemstone"
-			]
-	},
-	{
 		"name" : "FPS Savior v2",
 		"file" : "fpssavior",
 		"extension" : "ipf",
