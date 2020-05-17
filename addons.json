@@ -71,6 +71,20 @@
 			]
 	},
 	{
+		"name" : "Enchant Search",
+		"file" : "enchantsearch",
+		"extension" : "ipf",
+		"fileVersion" : "v0.1.0",
+		"releaseTag" : "enchantsearch",
+		"unicode" : "⛄",
+		"description" : "Let you search items with enchant.",
+		"tags" : [
+			"enchant",
+			"search",
+			"market"
+			]
+	},
+	{
 		"name" : "Damage Meter All Time",
 		"file" : "dpsmeteralltime",
 		"extension" : "ipf",
