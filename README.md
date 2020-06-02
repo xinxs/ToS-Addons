@@ -19,11 +19,6 @@ Alert function: Popup an alert if you dont have any pamoka to fill when entering
 
 Type /autopamoka to open settings.
 
-## Damage Meter All Time
-
-A dps meter, based on IMC's weekly boss damage meter:
-
-![](https://i.imgur.com/DMU8f5X.jpg)
 
 ## FPS Savior
 
