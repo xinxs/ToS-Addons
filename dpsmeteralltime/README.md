@@ -1,3 +1,5 @@
+**Not working now!!**
+
 # Damage Meter All Time
 
 A dps meter, based on IMC's weekly boss damage meter:
