@@ -70,6 +70,21 @@
 			"search",
 			"market"
 			]
+	},
+	{
+		"name" : "Assister Plus",
+		"file" : "assisterplus",
+		"extension" : "ipf",
+		"fileVersion" : "v0.3.0",
+		"releaseTag" : "assisterplus",
+		"unicode" : "⛄",
+		"description" : "Adds extra functions to the assisters UI.",
+		"tags" : [
+			"assister",
+			"assisters",
+			"assistersplus",
+			"ui"
+			]
 	}
 ]
 
