@@ -51,3 +51,9 @@ Enchant options are in "Other" tab
 ![](https://i.imgur.com/fdZh4QH.jpg)
 
 For especific % values, needs to add a decimal. 1 = 0.1%, 15= 1.5%,etc
+
+## Assister Plus
+
+Adds extra functions to the assisters UI: Save/Load card sets, lock cards and prevent fusion alert.
+
+![](https://i.imgur.com/eZepa9q.png)
