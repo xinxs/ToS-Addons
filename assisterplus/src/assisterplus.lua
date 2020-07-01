@@ -112,28 +112,28 @@ function ASSISTERPLUS_DROPLIST(frame)
 	local cIcon = frame:CreateOrGetControl('button', "btnico_1", 230, 647, 18, 24);
 	cIcon:SetSkinName("test_normal_button");
 	cIcon:SetText(string.format("{img normal_card %d %d}", 18, 24));
-	cIcon:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST');
+	cIcon:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST_BTN');
     cIcon:SetEventScriptArgString(ui.LBUTTONDOWN, "rarity");
 	cIcon:SetEventScriptArgNumber(ui.LBUTTONDOWN, 1);
 	
 	cIcon = frame:CreateOrGetControl('button', "btnico_2", 250, 647, 18, 24);
 	cIcon:SetSkinName("test_normal_button");
 	cIcon:SetText(string.format("{img rare_card %d %d}", 18, 24));
-	cIcon:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST');
+	cIcon:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST_BTN');
     cIcon:SetEventScriptArgString(ui.LBUTTONDOWN, "rarity");
 	cIcon:SetEventScriptArgNumber(ui.LBUTTONDOWN, 2);
 	
 	cIcon = frame:CreateOrGetControl('button', "btnico_3", 270, 647, 18, 24);
 	cIcon:SetSkinName("test_normal_button");
 	cIcon:SetText(string.format("{img unique_card %d %d}", 18, 24));
-	cIcon:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST');
+	cIcon:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST_BTN');
     cIcon:SetEventScriptArgString(ui.LBUTTONDOWN, "rarity");
 	cIcon:SetEventScriptArgNumber(ui.LBUTTONDOWN, 3);
 	
 	cIcon = frame:CreateOrGetControl('button', "btnico_4", 290, 647, 18, 24);
 	cIcon:SetSkinName("test_normal_button");
 	cIcon:SetText(string.format("{img legend_card %d %d}", 18, 24));
-	cIcon:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST');
+	cIcon:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST_BTN');
     cIcon:SetEventScriptArgString(ui.LBUTTONDOWN, "rarity");
 	cIcon:SetEventScriptArgNumber(ui.LBUTTONDOWN, 4);
 	
@@ -141,21 +141,21 @@ function ASSISTERPLUS_DROPLIST(frame)
 	local starbtn = frame:CreateOrGetControl('button', 'starbutton_1', 315, 645, 30, 30);
 	starbtn:SetSkinName("test_normal_button");
 	starbtn:SetText(string.format("{img monster_card_starmark %d %d}", 12, 12));
-	starbtn:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST');
+	starbtn:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST_BTN');
     starbtn:SetEventScriptArgString(ui.LBUTTONDOWN, "stars");
 	starbtn:SetEventScriptArgNumber(ui.LBUTTONDOWN, 1);
 	
 	starbtn = frame:CreateOrGetControl('button', 'starbutton_2', 339, 645, 30, 30);
 	starbtn:SetSkinName("test_normal_button");
 	starbtn:SetText(string.format("{img monster_card_starmark %d %d}", 12, 12) .. string.format("{img monster_card_starmark %d %d}", 12, 12));
-	starbtn:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST');
+	starbtn:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST_BTN');
     starbtn:SetEventScriptArgString(ui.LBUTTONDOWN, "stars");
 	starbtn:SetEventScriptArgNumber(ui.LBUTTONDOWN, 2);
 	
 	starbtn = frame:CreateOrGetControl('button', 'starbutton_3', 365, 645, 32, 30);
 	starbtn:SetSkinName("test_normal_button");
 	starbtn:SetText(string.format("{img monster_card_starmark %d %d}", 12, 12) .. string.format("{img monster_card_starmark %d %d}", 12, 12) .. string.format("{img monster_card_starmark %d %d}", 12, 12));
-	starbtn:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST');
+	starbtn:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST_BTN');
     starbtn:SetEventScriptArgString(ui.LBUTTONDOWN, "stars");
 	starbtn:SetEventScriptArgNumber(ui.LBUTTONDOWN, 3);
 	
@@ -207,6 +207,7 @@ function ASSISTERPLUS_ON_INIT(addon, frame)
 	acutil.setupHook(SET_ANCIENT_CARD_LIST_HOOKED, "SET_ANCIENT_CARD_LIST");
 	acutil.setupHook(ANCIENT_CARD_COMBINE_CHECK_HOOKED, "ANCIENT_CARD_COMBINE_CHECK");
 	acutil.setupHook(INIT_ANCIENT_CARD_INFO_TAB_HOOKED, "INIT_ANCIENT_CARD_INFO_TAB");
+	acutil.setupHook(ANCIENT_CARD_COMBINE_LIST_LOAD_HOOKED, "ANCIENT_CARD_COMBINE_LIST_LOAD");
 end
 
 function ANCIENT_CARD_LIST_OPEN_HOOKED(aframe)
@@ -352,11 +353,22 @@ function ASSISTERPLUS_TABRESET()
     end 
 end
 
-function ASSISTERPLUS_FILTERLIST(parent, FromctrlSet, argStr, argNum)
+function ASSISTERPLUS_FILTERLIST_BTN(parent, FromctrlSet, argStr, argNum)
+	local frame = ui.GetFrame("ancient_card_list");
+	local tab = frame:GetChild("tab");
+    AUTO_CAST(tab);
+    local index = tab:GetSelectItemIndex();
+	if index == 0 then
+		ASSISTERPLUS_FILTERLIST_INFO(frame, argStr, argNum);
+	else
+		ASSISTERPLUS_FILTERLIST_COMBINE(frame, argStr, argNum);
+	end
+end
+
+function ASSISTERPLUS_FILTERLIST_INFO(frame, argStr, argNum)
 	filterlist.ison = true;
 	filterlist.filtertype = argStr;
 	filterlist.argN = argNum;
-	local frame = ui.GetFrame("ancient_card_list");
     INIT_ANCIENT_CARD_SLOTS(frame,0)
 
     local ancient_card_list_Gbox =  GET_CHILD_RECURSIVELY(frame,'ancient_card_list_Gbox')
@@ -386,9 +398,50 @@ function ASSISTERPLUS_FILTERLIST(parent, FromctrlSet, argStr, argNum)
     ANCIENT_SET_COST(frame)
 end
 
+function ASSISTERPLUS_FILTERLIST_COMBINE(frame, argStr, argNum)
+	filterlist.ison = true;
+	filterlist.filtertype = argStr;
+	filterlist.argN = argNum;
+    local ancient_card_list_Gbox = GET_CHILD_RECURSIVELY(frame,'ancient_card_list_Gbox')
+    ancient_card_list_Gbox:RemoveAllChild()
+    ancient_card_list_Gbox:SetEventScript(ui.DROP,"ANCIENT_CARD_SLOT_POP_COMBINE_BY_DROP")
+    local slotBox = GET_CHILD_RECURSIVELY(frame,'ancient_card_slot_Gbox')
+    local guidList = {}
+    local index = 1
+    for i = 0,3 do
+        local ctrl = slotBox:GetChild("COMBINE_"..i)
+        local guid = ctrl:GetUserValue("ANCIENT_GUID")
+        if guid ~= "None" then
+            guidList[index] = guid
+            index = index + 1
+        end
+    end
+
+    local count = session.pet.GetAncientCardCount()
+    for i = 0,count-1 do
+        local card = session.pet.GetAncientCardByIndex(i)
+        local isSelected = false;
+        for i = 1,#guidList do
+            if guidList[i] == card:GetGuid() then
+                isSelected = true;
+                break;
+            end
+        end
+        if card.slot >= 4 and isSelected == false then
+			if argStr == "rarity" and argNum == card.rarity then
+				local ctrlSet = INIT_ANCIENT_CARD_LIST(frame,card)
+				ctrlSet:SetEventScript(ui.DROP,"ANCIENT_CARD_SLOT_POP_COMBINE_BY_DROP")
+			elseif argStr == "stars" and argNum == card.starrank then
+				local ctrlSet = INIT_ANCIENT_CARD_LIST(frame,card)
+				ctrlSet:SetEventScript(ui.DROP,"ANCIENT_CARD_SLOT_POP_COMBINE_BY_DROP")
+			end
+        end
+    end
+end
+
 function INIT_ANCIENT_CARD_INFO_TAB_HOOKED(frame)
 	if filterlist.ison then
-		ASSISTERPLUS_FILTERLIST(frame, "", filterlist.filtertype, filterlist.argN);
+		ASSISTERPLUS_FILTERLIST_INFO(frame, filterlist.filtertype, filterlist.argN);
 		return
 	end
     INIT_ANCIENT_CARD_SLOTS(frame,0)
@@ -414,4 +467,41 @@ function INIT_ANCIENT_CARD_INFO_TAB_HOOKED(frame)
     ancient_card_num:SetTextByKey("count",cnt)
     ANCEINT_PASSIVE_LIST_SET(frame)
     ANCIENT_SET_COST(frame)
+end
+
+function ANCIENT_CARD_COMBINE_LIST_LOAD_HOOKED(frame)
+	if filterlist.ison then
+		ASSISTERPLUS_FILTERLIST_COMBINE(frame, filterlist.filtertype, filterlist.argN);
+		return
+	end
+    local ancient_card_list_Gbox = GET_CHILD_RECURSIVELY(frame,'ancient_card_list_Gbox')
+    ancient_card_list_Gbox:RemoveAllChild()
+    ancient_card_list_Gbox:SetEventScript(ui.DROP,"ANCIENT_CARD_SLOT_POP_COMBINE_BY_DROP")
+    local slotBox = GET_CHILD_RECURSIVELY(frame,'ancient_card_slot_Gbox')
+    local guidList = {}
+    local index = 1
+    for i = 0,3 do
+        local ctrl = slotBox:GetChild("COMBINE_"..i)
+        local guid = ctrl:GetUserValue("ANCIENT_GUID")
+        if guid ~= "None" then
+            guidList[index] = guid
+            index = index + 1
+        end
+    end
+
+    local count = session.pet.GetAncientCardCount()
+    for i = 0,count-1 do
+        local card = session.pet.GetAncientCardByIndex(i)
+        local isSelected = false;
+        for i = 1,#guidList do
+            if guidList[i] == card:GetGuid() then
+                isSelected = true;
+                break;
+            end
+        end
+        if card.slot >= 4 and isSelected == false then
+            local ctrlSet = INIT_ANCIENT_CARD_LIST(frame,card)
+            ctrlSet:SetEventScript(ui.DROP,"ANCIENT_CARD_SLOT_POP_COMBINE_BY_DROP")
+        end
+    end
 end
