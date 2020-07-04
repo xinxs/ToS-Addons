@@ -89,10 +89,6 @@ function FPSSAVIOR_START()
 	if not saviorFrame.isDragging then
 		saviorFrame:SetOffset(_G["FPSSAVIOR"]["settings"].displayX, _G["FPSSAVIOR"]["settings"].displayY);
 	end
-	if tonumber(config.GetAutoAdjustLowLevel()) ~= 2 then
-		config.SetAutoAdjustLowLevel(2);
-		config.SaveConfig();
-	end
 	if _G["FPSSAVIOR"]["settings"].saviorToggle == 1 then
 		FPSSAVIOR_HIGH();
 	elseif _G["FPSSAVIOR"]["settings"].saviorToggle == 2 then
@@ -107,11 +103,11 @@ end
 function FPSSAVIOR_CMD(command)
 	local cmd = "";
 	if #command > 0 then
-        cmd = table.remove(command, 1);
-    else
+		cmd = table.remove(command, 1);
+	else
 		FPSSAVIOR_TOGGLE();
-        return;
-    end
+		return;
+	end
 	if cmd == "help" then
 		CHAT_SYSTEM("FPS Savior Help:{nl}'/fpssavior' to toggle between 3 predefined settings High, Low, and Super Low.{nl}'/fpssavior lock' to unlock/lock the settings display in order to move it around.{nl}'/fpssavior default' to restore the settings display to its default location.");
 		return;
@@ -176,6 +172,11 @@ function FPSSAVIOR_HIGH()
 	imcperfOnOff.EnableIMCEffect(1);
 	imcperfOnOff.EnableEffect(1);
 	
+	--lowmodeconfig
+	graphic.EnableLowOption(0);
+	config.SetAutoAdjustLowLevel(2);
+	config.SaveConfig();
+	
 	FPSSAVIOR_SETTEXT();
 	FPSSAVIOR_SAVESETTINGS();
 end
@@ -183,70 +184,85 @@ end
 function FPSSAVIOR_MEDIUM()
 	_G["FPSSAVIOR"]["settings"].saviorToggle = 2;
 		
-		graphic.SetDrawActor(30);
-		graphic.SetDrawMonster(50);
-		graphic.EnableFastLoading(1);
-		graphic.EnableBlur(0);
-		graphic.EnableBloom(0);
-		graphic.EnableCharEdge(1);
-		graphic.EnableDepth(0);
-		graphic.EnableFXAA(1);
-		graphic.EnableGlow(1);
-		graphic.EnableHighTexture(1);
-		graphic.EnableSharp(0);
-		graphic.EnableSoftParticle(0);
-		graphic.EnableWater(0); 
-		imcperfOnOff.EnableIMCEffect(1);
-		imcperfOnOff.EnableEffect(1);
+	graphic.SetDrawActor(30);
+	graphic.SetDrawMonster(50);
+	graphic.EnableFastLoading(1);
+	graphic.EnableBlur(0);
+	graphic.EnableBloom(0);
+	graphic.EnableCharEdge(1);
+	graphic.EnableDepth(0);
+	graphic.EnableFXAA(1);
+	graphic.EnableGlow(1);
+	graphic.EnableHighTexture(1);
+	graphic.EnableSharp(0);
+	graphic.EnableSoftParticle(0);
+	graphic.EnableWater(0); 
+	imcperfOnOff.EnableIMCEffect(1);
+	imcperfOnOff.EnableEffect(1);
 		
-		FPSSAVIOR_SETTEXT();
-		FPSSAVIOR_SAVESETTINGS()
+	--lowmodeconfig
+	graphic.EnableLowOption(0);
+	config.SetAutoAdjustLowLevel(2);
+	config.SaveConfig();
+		
+	FPSSAVIOR_SETTEXT();
+	FPSSAVIOR_SAVESETTINGS()
 end
 
 function FPSSAVIOR_LOW()
 	_G["FPSSAVIOR"]["settings"].saviorToggle = 3;
 		
-		graphic.SetDrawActor(15);
-		graphic.SetDrawMonster(30);
-		graphic.EnableFastLoading(1);
-		graphic.EnableBlur(0);
-		graphic.EnableBloom(0);
-		graphic.EnableCharEdge(0);
-		graphic.EnableDepth(0);
-		graphic.EnableFXAA(0);
-		graphic.EnableGlow(1);
-		graphic.EnableHighTexture(0);
-		graphic.EnableSharp(0);
-		graphic.EnableSoftParticle(0);
-		graphic.EnableWater(0); 
-		imcperfOnOff.EnableIMCEffect(1);
-		imcperfOnOff.EnableEffect(1);
+	graphic.SetDrawActor(15);
+	graphic.SetDrawMonster(30);
+	graphic.EnableFastLoading(1);
+	graphic.EnableBlur(0);
+	graphic.EnableBloom(0);
+	graphic.EnableCharEdge(0);
+	graphic.EnableDepth(0);
+	graphic.EnableFXAA(0);
+	graphic.EnableGlow(1);
+	graphic.EnableHighTexture(0);
+	graphic.EnableSharp(0);
+	graphic.EnableSoftParticle(0);
+	graphic.EnableWater(0); 
+	imcperfOnOff.EnableIMCEffect(1);
+	imcperfOnOff.EnableEffect(1);
 		
-		FPSSAVIOR_SETTEXT();
-		FPSSAVIOR_SAVESETTINGS()
+	--lowmodeconfig
+	graphic.EnableLowOption(1);
+	config.SetAutoAdjustLowLevel(0);
+	config.SaveConfig();
+	
+	FPSSAVIOR_SETTEXT();
+	FPSSAVIOR_SAVESETTINGS()
 end
 
 function FPSSAVIOR_ULOW()
 	_G["FPSSAVIOR"]["settings"].saviorToggle = 4;
 		
-		graphic.SetDrawActor(-100);
-		graphic.SetDrawMonster(30);
-		graphic.EnableFastLoading(1);
-		graphic.EnableBlur(0);
-		graphic.EnableBloom(0);
-		graphic.EnableCharEdge(0);
-		graphic.EnableDepth(0);
-		graphic.EnableFXAA(0);
-		graphic.EnableGlow(0);
-		graphic.EnableHighTexture(0);
-		graphic.EnableSharp(0);
-		graphic.EnableSoftParticle(0);
-		graphic.EnableWater(0); 
-		imcperfOnOff.EnableIMCEffect(0);
-		imcperfOnOff.EnableEffect(0);
+	graphic.SetDrawActor(-100);
+	graphic.SetDrawMonster(30);
+	graphic.EnableFastLoading(1);
+	graphic.EnableBlur(0);
+	graphic.EnableBloom(0);
+	graphic.EnableCharEdge(0);
+	graphic.EnableDepth(0);
+	graphic.EnableFXAA(0);
+	graphic.EnableGlow(0);
+	graphic.EnableHighTexture(0);
+	graphic.EnableSharp(0);
+	graphic.EnableSoftParticle(0);
+	graphic.EnableWater(0); 
+	imcperfOnOff.EnableIMCEffect(0);
+	imcperfOnOff.EnableEffect(0);
 		
-		FPSSAVIOR_SETTEXT();
-		FPSSAVIOR_SAVESETTINGS()
+	--lowmodeconfig
+	graphic.EnableLowOption(1);
+	config.SetAutoAdjustLowLevel(0);
+	config.SaveConfig();
+	
+	FPSSAVIOR_SETTEXT();
+	FPSSAVIOR_SAVESETTINGS()
 end
 
 function FPSSAVIOR_TOGGLE()

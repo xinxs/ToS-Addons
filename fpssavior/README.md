@@ -13,3 +13,5 @@ Removed a broken graphic option, added toggle button and new mode: "Medium".
 -v2.1.0: switched the toggle button to 4 select buttons: 
 
 ![](https://i.imgur.com/2X5lJrR.jpg)
+
+-v2.2.0: low/ultralow sets graphics > low mode to on (lighter textures);
