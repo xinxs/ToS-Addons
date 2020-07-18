@@ -85,6 +85,21 @@
 			"assistersplus",
 			"ui"
 			]
+	},
+	{
+		"name" : "Raid Warp",
+		"file" : "raidwarp",
+		"extension" : "ipf",
+		"fileVersion" : "v1.0.1",
+		"releaseTag" : "raidwarp",
+		"unicode" : "⛄",
+		"description" : "Create a shortcut and chat commands for Dungeons(F10) warp. /rw",
+		"tags" : [
+			"raid",
+			"dungeon",
+			"warp",
+			"raidwarp"
+			]
 	}
 ]
 
