@@ -57,3 +57,12 @@ For especific % values, needs to add a decimal. 1 = 0.1%, 15= 1.5%,etc
 Adds extra functions to the assisters UI: Save/Load card sets, lock cards, fusion alert, filter list(can use together with the default sort function).
 
 ![](https://i.imgur.com/T1ZTRO1.jpg)
+
+## Raid Warp
+
+Create a shortcut and chat commands for Dungeons(F10) warp. 
+
+![](https://i.imgur.com/YnAbiwo.png)
+
+/rw to open frame, /rw help for command list.
+
