@@ -7,7 +7,7 @@ _G["ADDONS"][author][addonName] = _G["ADDONS"][author][addonName] or {}
 local g = _G["ADDONS"][author][addonName]
 g.settings = {x = 500, y = 50, mini = 0, isclose = 0};
 local settingsFileLoc = string.format("../addons/%s/settings.json", string.lower(addonName));
-local RList = {Library = 33, Kugheri = 42, Wastrel = 46, Asio = 507, Ignas = 508, Skiaclipse = 509, Moring = 521};
+local RList = {Library = 33, Kugheri = 42, Wastrel = 46, Asio = 507, Ignas = 508, Skiaclipse = 509, Moring = 521, Witch = 617};
 local acutil = require('acutil');
 
 local function spairs(t, order)
@@ -104,7 +104,7 @@ function RAIDWARP_OPENFRAME()
 		frame:SetOffset(g.settings.x, g.settings.y);
 		return
 	else
-		frame:Resize(160,260);
+		frame:Resize(160,292);
 	end
 	frame:SetOffset(g.settings.x, g.settings.y);
 	local i = 0;
@@ -162,6 +162,7 @@ function RAIDWARP_HELP()
 	text = text .. "{s18}/rw Asio{/}{nl} {s16}Asiomage Testing Grounds (Frienel Memorial){nl} {nl}";
 	text = text .. "{s18}/rw Ignas{/}{nl} {s16}Astral Tower Closed Quarters (Astral Tower 4F){nl} {nl}";
 	text = text .. "{s18}/rw Skiaclipse{/}{nl} {s16}Tomb of the White Crow (Rasvoy Lake){nl} {nl}";
-	text = text .. "{s18}/rw Moring{/}{nl} {s16}Lepidoptera Junction (Stele Road)";
+	text = text .. "{s18}/rw Moring{/}{nl} {s16}Lepidoptera Junction (Stele Road){nl} {nl}";
+	text = text .. "{s18}/rw Witch{/}{nl} {s16}White Witchs Forest (Stogas Plateau)";
 	return ui.MsgBox(text,"","Nope");
 end

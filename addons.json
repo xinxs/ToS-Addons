@@ -90,7 +90,7 @@
 		"name" : "Raid Warp",
 		"file" : "raidwarp",
 		"extension" : "ipf",
-		"fileVersion" : "v1.0.1",
+		"fileVersion" : "v1.0.2",
 		"releaseTag" : "raidwarp",
 		"unicode" : "⛄",
 		"description" : "Create a shortcut and chat commands for Dungeons(F10) warp. /rw",
