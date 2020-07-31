@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uiframe name="fpssavior" x="0" y="0" width="10" height="10">
 	<frame fasthide="true" layout_gravity="left top"/>
-    <input moveable="false" hittestframe="false"/>
+    <skin frameskin=" "/>
+    <input hittest="true" movable="true" moveintitlebar="false" hittestframe="true"/>
     <layer layerlevel="10"/>
-    <draw drawframe="false" drawtitlebarframe="false" drawtitlebar="false"/>
+    <draw drawtitlebarframe="false" drawtitlebar="false"/>
     <option closebutton="false" hideable="false"/>
     <controls/>
 </uiframe>
