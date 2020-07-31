@@ -6,3 +6,4 @@ Create a shortcut and chat commands for Dungeons(F10) warp.
 
 /rw to open frame, /rw help for command list.
 
+v1.0.2: Withe Witch added

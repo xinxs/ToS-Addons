@@ -64,7 +64,7 @@
 		"fileVersion" : "v0.1.0",
 		"releaseTag" : "enchantsearch",
 		"unicode" : "⛄",
-		"description" : "Let you search items with enchant.",
+		"description" : "Not need anymore since Itos patch 28/07/2020, you should uninstall it, because it overides the official function.",
 		"tags" : [
 			"enchant",
 			"search",

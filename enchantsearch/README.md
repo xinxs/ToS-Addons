@@ -1,5 +1,7 @@
 # Enchant Search
 
+**Not need anymore since Itos patch 28/07/2020, you should uninstall it, because it overides the official function.**
+
 Let you search items with enchant.
 
 Enchant options are in "Other" tab
