@@ -8,7 +8,7 @@ New func: Hide players/summons
 
 ![](https://i.imgur.com/JJN234g.jpg)
 
-**Notes to use hide func.:
+**Notes to use hide func.:**
 
 To unhide things, you need to get away from them and come back according to your field view. In some instances like the CM, which has no limit on the rendering distance, you will need to relog, since its will not update just by geting away. Summons will need to re summon, since you cant get far from them.
 
