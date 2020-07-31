@@ -10,7 +10,7 @@ New func: Hide players/summons
 
 **Notes to use hide func.:
 
-**To unhide things, you need to get away from them and come back according to your field view. In some instances like the CM, which has no limit on the rendering distance, you will need to relog, since its will not update just by geting away. Summons will need to re summon, since you cant get far from them.
+To unhide things, you need to get away from them and come back according to your field view. In some instances like the CM, which has no limit on the rendering distance, you will need to relog, since its will not update just by geting away. Summons will need to re summon, since you cant get far from them.
 
 **Also note that some bosses mechanics will also be hide by using the summon option, like White Witch's orbs.
 
