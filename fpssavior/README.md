@@ -14,14 +14,11 @@ New func: Hide players/summons
 
 **Also note that some bosses mechanics will also be hide by using the summon option, like White Witch's orbs.**
 
-![](https://i.imgur.com/JJN234g.jpg)
 
 /fpssavior lock : lock/unlock the ui to move around.   /fpssavior : toggle betwen modes 
 
 
 -v2.1.0: switched the toggle button to 4 select buttons: 
-
-![](https://i.imgur.com/2X5lJrR.jpg)
 
 -v2.2.0: low/ultralow sets graphics > low mode to on (lighter textures);
 
