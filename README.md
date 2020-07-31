@@ -28,7 +28,7 @@ Updated version of fpssavior from FiftyCaliber
 
 /fpssavior lock : lock/unlock the ui to move around.   /fpssavior : toggle betwen modes 
 
-![](https://i.imgur.com/2X5lJrR.jpg)
+![](https://i.imgur.com/JJN234g.jpg)
 
 ## Inputswitch Joystick
 
