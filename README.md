@@ -2,8 +2,6 @@
 
 ## Alchemist Calculator
 
-[info](https://github.com/xinxs/ToS-Addons/blob/master/alchcalc/README.md)
-
 A simple calculator, that search your inventory for uosis/dilgele and shows how much materials/money you need. (For HP/SP potions only)
 
 ![alt text](https://i.imgur.com/zYcNHtS.jpg "ss")
