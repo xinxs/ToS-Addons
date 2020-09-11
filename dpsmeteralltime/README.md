@@ -1,4 +1,4 @@
-**Not working now!!**
+**Not working now!! -The dps func was capped by imc, only working on wbr **
 
 # Damage Meter All Time
 
