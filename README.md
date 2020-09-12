@@ -70,3 +70,8 @@ Create a shortcut and chat commands for Dungeons(F10) warp.
 
 /rw to open frame, /rw help for command list.
 
+## Hide Drop Msg
+
+Hide this silver drop msg:
+
+![](https://i.imgur.com/j1XmaHX.png)
