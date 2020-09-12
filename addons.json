@@ -100,6 +100,21 @@
 			"warp",
 			"raidwarp"
 			]
+	},
+	{
+		"name" : "Hide Drop Msg",
+		"file" : "hidemsgdrop",
+		"extension" : "ipf",
+		"fileVersion" : "v0.0.1",
+		"releaseTag" : "hidemsgdrop",
+		"unicode" : "⛄",
+		"description" : "Hides Silver/Exp drop msg",
+		"tags" : [
+			"drop",
+			"hide",
+			"ui",
+			"exp"
+			]
 	}
 ]
 
