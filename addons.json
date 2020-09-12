@@ -108,12 +108,11 @@
 		"fileVersion" : "v0.0.1",
 		"releaseTag" : "hidemsgdrop",
 		"unicode" : "⛄",
-		"description" : "Hides Silver/Exp drop msg",
+		"description" : "Hide Silver drop msg",
 		"tags" : [
 			"drop",
 			"hide",
-			"ui",
-			"exp"
+			"ui"
 			]
 	}
 ]
