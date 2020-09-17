@@ -28,14 +28,16 @@ function ASSISTERPLUS_SAVEBTN()
 end
 
 function ASSISTERPLUS_SAVESET(setname, frame)
+	local delay = 0;
 	local frame = ui.GetFrame("ancient_card_list");
 	local cnt = session.pet.GetAncientCardCount();
 	g.settings.saves[setname] = {};
 	for i = 0,3 do
 		local card = session.pet.GetAncientCardBySlot(i);
 		if card ~= nil then
-			if not ap_iscardlocked(card:GetGuid()) then
-				table.insert(g.settings.locklist, tostring(card:GetGuid()));
+			if card.isLock ~= true then
+			ReserveScript(string.format("ReqLockAncientCard(\"%s\")", card:GetGuid()), delay);
+			delay = delay + 0.5;
 			end
 			g.settings.saves[setname][i+1] = card:GetGuid();
 		end
@@ -102,12 +104,12 @@ function ASSISTERPLUS_DROPLIST(frame)
 	savebtn:SetText("{ol}Save");
 	savebtn:SetEventScript(ui.LBUTTONUP,"ASSISTERPLUS_SAVEBTN");
 	--alertbox
-	local Alertbox = frame:CreateOrGetControl('checkbox', 'alertbox', 95, 647, 100, 20)
-	Alertbox:SetText("{ol}Fusion alert");
-	Alertbox:SetEventScript(ui.LBUTTONUP,"ASSISTERPLUS_TABRESET");
-	Alertbox:SetTextTooltip("Popup an alert if you try to fusion 3 of the same card, to avoid the mistake of doing a fusion instead of evolving.");
-	local Alertboxchild = GET_CHILD(frame, "alertbox");
-	Alertboxchild:SetCheck(g.settings.alert);
+	-- local Alertbox = frame:CreateOrGetControl('checkbox', 'alertbox', 95, 647, 100, 20)
+	-- Alertbox:SetText("{ol}Fusion alert");
+	-- Alertbox:SetEventScript(ui.LBUTTONUP,"ASSISTERPLUS_TABRESET");
+	-- Alertbox:SetTextTooltip("Popup an alert if you try to fusion 3 of the same card, to avoid the mistake of doing a fusion instead of evolving.");
+	-- local Alertboxchild = GET_CHILD(frame, "alertbox");
+	-- Alertboxchild:SetCheck(g.settings.alert);
 	--rarityfilter
 	local cIcon = frame:CreateOrGetControl('button', "btnico_1", 230, 647, 18, 24);
 	cIcon:SetSkinName("test_normal_button");
@@ -174,24 +176,25 @@ end
 
 function ASSISTERPLUS_LOCKBTN(parent, FromctrlSet, argStr, argNum)
 	local frame = ui.GetFrame("ancient_card_list");
-	if ap_iscardlocked(argStr) then
-		table.remove(g.settings.locklist, ap_tablefind(g.settings.locklist, tostring(argStr)));
-	else
-		table.insert(g.settings.locklist, tostring(argStr));
-	end
-	acutil.saveJSON(settingsFileLoc, g.settings);
-	ON_ANCIENT_CARD_RELOAD(frame);
+	ReqLockAncientCard(argStr);
+	-- if ap_iscardlocked(argStr) then
+		-- table.remove(g.settings.locklist, ap_tablefind(g.settings.locklist, tostring(argStr)));
+	-- else
+		-- table.insert(g.settings.locklist, tostring(argStr));
+	-- end
+	-- acutil.saveJSON(settingsFileLoc, g.settings);
+	--ON_ANCIENT_CARD_RELOAD(frame);
 end
 
-function ap_iscardlocked(guid)
-	local Llist = g.settings.locklist;
-	for k, v in pairs(Llist) do
-		if v == tostring(guid) then
-			return true
-		end
-	end
-	return false
-end
+-- function ap_iscardlocked(guid)
+	-- local Llist = g.settings.locklist;
+	-- for k, v in pairs(Llist) do
+		-- if v == tostring(guid) then
+			-- return true
+		-- end
+	-- end
+	-- return false
+-- end
 
 function ap_tablefind(tab,el)
 	for index, value in pairs(tab) do
@@ -201,22 +204,12 @@ function ap_tablefind(tab,el)
 	end
 end
 
-function ASSISTERPLUS_LOCKLIST_CLEAR()
-	local Llist = g.settings.locklist;
-	for k, v in pairs(Llist) do
-		local card = session.pet.GetAncientCardByGuid(v);
-		if card == nil then
-			table.remove(g.settings.locklist, k);
-		end
-	end
-	acutil.saveJSON(settingsFileLoc, g.settings);
-end
-
 function ASSISTERPLUS_ON_INIT(addon, frame)
 	ASSISTERPLUS_LOAD();
+	addon:RegisterMsg('ANCIENT_CARD_LOCK', 'ON_ASSISTERPLUS_LOCK');
 	acutil.setupHook(ANCIENT_CARD_LIST_OPEN_HOOKED, "ANCIENT_CARD_LIST_OPEN");
 	acutil.setupHook(SET_ANCIENT_CARD_LIST_HOOKED, "SET_ANCIENT_CARD_LIST");
-	acutil.setupHook(ANCIENT_CARD_COMBINE_CHECK_HOOKED, "ANCIENT_CARD_COMBINE_CHECK");
+	--acutil.setupHook(ANCIENT_CARD_COMBINE_CHECK_HOOKED, "ANCIENT_CARD_COMBINE_CHECK");
 	acutil.setupHook(INIT_ANCIENT_CARD_INFO_TAB_HOOKED, "INIT_ANCIENT_CARD_INFO_TAB");
 	acutil.setupHook(ANCIENT_CARD_COMBINE_LIST_LOAD_HOOKED, "ANCIENT_CARD_COMBINE_LIST_LOAD");
 end
@@ -235,22 +228,22 @@ function ANCIENT_CARD_LIST_OPEN_HOOKED(aframe)
 	ANCIENT_SET_COST(frame)
 	local ancient_card_comb_name = GET_CHILD_RECURSIVELY(frame,"ancient_card_comb_name")
 	ancient_card_comb_name:SetTooltipType('ancient_passive')
-	ASSISTERPLUS_LOCKLIST_CLEAR()
 	ASSISTERPLUS_DROPLIST(frame)
 end
 
-function SET_ANCIENT_CARD_LIST_HOOKED(gbox,card)
-	local height = (gbox:GetChildCount()-1) * 25.5
+function SET_ANCIENT_CARD_LIST_HOOKED(gbox,card,isLockMode)
+	local height = (gbox:GetChildCount()-1) * 51
 	local ctrlSet = gbox:CreateOrGetControlSet("ancient_card_item_list", "SET_" .. card.slot, 0, height);
 	--lock
-	local lockbtn = gbox:CreateOrGetControl('button', "lockbtn".. card.slot, 390, height+16, 64, 28);
+	local lockbtn = ctrlSet:CreateOrGetControl('button', "lockbtn".. card.slot, 390, 16, 64, 28);
 	lockbtn:SetSkinName('test_pvp_btn');
 	lockbtn:SetText("{ol}Lock");
 	lockbtn:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_LOCKBTN');
 	lockbtn:SetEventScriptArgString(ui.LBUTTONDOWN, tostring(card:GetGuid()));
-	if ap_iscardlocked(card:GetGuid()) then
+	if card.isLock == true then
 		lockbtn:SetText("{#FF0000}{ol}Locked");
 	end
+	
 	--set level
 	local exp = card:GetStrExp();
 	local xpInfo = gePetXP.GetXPInfo(gePetXP.EXP_ANCIENT, tonumber(exp))
@@ -287,13 +280,13 @@ function SET_ANCIENT_CARD_LIST_HOOKED(gbox,card)
 	nameText:SetText(name)
 
 	local racetypeDic = {
-		Klaida="insect",
-		Widling="wild",
-		Velnias="devil",
-		Forester="plant",
-		Paramune="variation",
-		None="melee"
-			}
+						Klaida="insect",
+						Widling="wild",
+						Velnias="devil",
+						Forester="plant",
+						Paramune="variation",
+						None="melee"
+					}
 	--set type
 	local type1Slot = GET_CHILD_RECURSIVELY(ctrlSet,"ancient_card_type1_pic")
 	local type1Icon = CreateIcon(type1Slot)
@@ -301,20 +294,15 @@ function SET_ANCIENT_CARD_LIST_HOOKED(gbox,card)
 
 	local type2Slot = GET_CHILD_RECURSIVELY(ctrlSet,"ancient_card_type2_pic")
 	local type2Icon = CreateIcon(type2Slot)
-	type2Icon:SetImage("attribute_"..monCls.Attribute)    
-
---tooltip
+	type2Icon:SetImage("attribute_"..monCls.Attribute)	
+	
+	--tooltip
 	ctrlSet:SetTooltipType("ancient_card")
 	ctrlSet:SetTooltipStrArg(card:GetGuid())
 
-	if not ap_iscardlocked(card:GetGuid()) then
-		ctrlSet:SetUserValue("ANCIENT_GUID",card:GetGuid())
-		ctrlSet:SetDragFrame('ancient_frame_drag')
-		ctrlSet:SetDragScp("INIT_ANCEINT_FRAME_DRAG")
-	else
-		ctrlSet:SetEventScript(ui.RBUTTONUP, 'ASSISTERPLUS_SWAP_RBTN');
-		ctrlSet:SetEventScriptArgString(ui.RBUTTONUP, tostring(card:GetGuid()));
-	end
+	ctrlSet:SetUserValue("ANCIENT_GUID",card:GetGuid())
+
+	SET_CTRL_LOCK_MODE(ctrlSet,isLockMode)
 	if card.isNew == true then
 		local slot = GET_CHILD_RECURSIVELY(ctrlSet,'ancient_card_slot')
 		slot:SetHeaderImage('new_inventory_icon');
@@ -322,51 +310,51 @@ function SET_ANCIENT_CARD_LIST_HOOKED(gbox,card)
 	return ctrlSet
 end
 
-function ANCIENT_CARD_COMBINE_CHECK_HOOKED(frame, guid)
-	local samecardcnt = 0;
-	local fromCard = session.pet.GetAncientCardByGuid(guid)
-	local slotBox = GET_CHILD_RECURSIVELY(frame,"ancient_card_slot_Gbox")
-	local cnt = slotBox:GetChildCount()
-	for j = 0,cnt-1 do
-		local toCtrlSet = slotBox:GetChildByIndex(j)
-		local toGuid = toCtrlSet:GetUserValue("ANCIENT_GUID")
-		if toGuid ~= nil and toGuid ~= "None" then   
-			local toCard = session.pet.GetAncientCardByGuid(toGuid);
-			if toCard:GetClassName() == fromCard:GetClassName() then
-				samecardcnt = samecardcnt + 1;
-			end
-		end	
-	end
-	for i = 0,cnt-1 do
-		local toCtrlSet = slotBox:GetChildByIndex(i)
-		local toGuid = toCtrlSet:GetUserValue("ANCIENT_GUID")
-		if toGuid ~= nil and toGuid ~= "None" then 
-			local toCard = session.pet.GetAncientCardByGuid(toGuid);
-			if g.settings.alert == 1 and samecardcnt >= 2 then
-				ui.MsgBox("{#FF0000}{ol}ALERT!{/}{/}{nl} {#FF0000}{ol}This is FUSION tab, will sacrifice 3 cards to get a random one.{/}{/}{nl}Continue?","","ASSISTERPLUS_TABRESET");
-			end
-			if toCard.rarity ~= fromCard.rarity then
-				return false;
-			else
-				return true;
-			end
-		end
-	end
-	return true;
-end
+-- function ANCIENT_CARD_COMBINE_CHECK_HOOKED(frame, guid)
+	-- local samecardcnt = 0;
+	-- local fromCard = session.pet.GetAncientCardByGuid(guid)
+	-- local slotBox = GET_CHILD_RECURSIVELY(frame,"ancient_card_slot_Gbox")
+	-- local cnt = slotBox:GetChildCount()
+	-- for j = 0,cnt-1 do
+		-- local toCtrlSet = slotBox:GetChildByIndex(j)
+		-- local toGuid = toCtrlSet:GetUserValue("ANCIENT_GUID")
+		-- if toGuid ~= nil and toGuid ~= "None" then   
+			-- local toCard = session.pet.GetAncientCardByGuid(toGuid);
+			-- if toCard:GetClassName() == fromCard:GetClassName() then
+				-- samecardcnt = samecardcnt + 1;
+			-- end
+		-- end	
+	-- end
+	-- for i = 0,cnt-1 do
+		-- local toCtrlSet = slotBox:GetChildByIndex(i)
+		-- local toGuid = toCtrlSet:GetUserValue("ANCIENT_GUID")
+		-- if toGuid ~= nil and toGuid ~= "None" then 
+			-- local toCard = session.pet.GetAncientCardByGuid(toGuid);
+			-- if g.settings.alert == 1 and samecardcnt >= 2 then
+				-- ui.MsgBox("{#FF0000}{ol}ALERT!{/}{/}{nl} {#FF0000}{ol}This is FUSION tab, will sacrifice 3 cards to get a random one.{/}{/}{nl}Continue?","","ASSISTERPLUS_TABRESET");
+			-- end
+			-- if toCard.rarity ~= fromCard.rarity then
+				-- return false;
+			-- else
+				-- return true;
+			-- end
+		-- end
+	-- end
+	-- return true;
+-- end
 
-function ASSISTERPLUS_TABRESET()
-	local frame = ui.GetFrame("ancient_card_list");
-	local Alertboxchild = GET_CHILD(frame, "alertbox");
-	g.settings.alert = Alertboxchild:IsChecked();
-	acutil.saveJSON(settingsFileLoc, g.settings);
-	local tab = frame:GetChild("tab")
-	AUTO_CAST(tab);
-	if tab ~= nil then
-		tab:SelectTab(0);
-		ANCIENT_CARD_LIST_TAB_CHANGE(frame)
-	end 
-end
+-- function ASSISTERPLUS_TABRESET()
+	-- local frame = ui.GetFrame("ancient_card_list");
+	-- local Alertboxchild = GET_CHILD(frame, "alertbox");
+	-- g.settings.alert = Alertboxchild:IsChecked();
+	-- acutil.saveJSON(settingsFileLoc, g.settings);
+	-- local tab = frame:GetChild("tab")
+	-- AUTO_CAST(tab);
+	-- if tab ~= nil then
+		-- tab:SelectTab(0);
+		-- ANCIENT_CARD_LIST_TAB_CHANGE(frame)
+	-- end 
+-- end
 
 function ASSISTERPLUS_FILTERLIST_BTN(parent, FromctrlSet, argStr, argNum)
 	local frame = ui.GetFrame("ancient_card_list");
@@ -380,29 +368,29 @@ function ASSISTERPLUS_FILTERLIST_BTN(parent, FromctrlSet, argStr, argNum)
 	end
 end
 
-function ASSISTERPLUS_SWAP_RBTN(parent, FromctrlSet, argStr, argNum)
-	local frame = ui.GetFrame("ancient_card_list");
-	local tab = frame:GetChild("tab");
-	AUTO_CAST(tab);
-	local index = tab:GetSelectItemIndex();
-	if index == 0 then
-		local slot = nil;
-		for i = 0,3 do
-			local toCard = session.pet.GetAncientCardBySlot(i)
-			if toCard == nil then
-				slot = i
-				break;
-			end
-		end
-		REQUEST_SWAP_ANCIENT_CARD(frame,argStr,slot)
-	elseif index == 2 then
-		local card = session.pet.GetAncientCardByGuid(argStr)
-		local toCtrlSet = GET_EMPTY_COMBINE_SLOT(frame,argStr)
-		SET_ANCIENT_CARD_SLOT(toCtrlSet,card)
-		ENABLE_COMBINE_SLOT(frame)
-		ANCIENT_CARD_COMBINE_LIST_LOAD_HOOKED(frame)
-	end
-end
+-- function ASSISTERPLUS_SWAP_RBTN(parent, FromctrlSet, argStr, argNum)
+	-- local frame = ui.GetFrame("ancient_card_list");
+	-- local tab = frame:GetChild("tab");
+	-- AUTO_CAST(tab);
+	-- local index = tab:GetSelectItemIndex();
+	-- if index == 0 then
+		-- local slot = nil;
+		-- for i = 0,3 do
+			-- local toCard = session.pet.GetAncientCardBySlot(i)
+			-- if toCard == nil then
+				-- slot = i
+				-- break;
+			-- end
+		-- end
+		-- REQUEST_SWAP_ANCIENT_CARD(frame,argStr,slot)
+	-- elseif index == 2 then
+		-- local card = session.pet.GetAncientCardByGuid(argStr)
+		-- local toCtrlSet = GET_EMPTY_COMBINE_SLOT(frame,argStr)
+		-- SET_ANCIENT_CARD_SLOT(toCtrlSet,card)
+		-- ENABLE_COMBINE_SLOT(frame)
+		-- ANCIENT_CARD_COMBINE_LIST_LOAD_HOOKED(frame)
+	-- end
+-- end
 
 function ASSISTERPLUS_FILTERLIST_INFO(frame, argStr, argNum)
 	filterlist.ison = true;
@@ -544,3 +532,17 @@ function ANCIENT_CARD_COMBINE_LIST_LOAD_HOOKED(frame)
 		end
 	end
 end
+
+function ON_ASSISTERPLUS_LOCK(frame,msg,guid)
+	local aframe = ui.GetFrame("ancient_card_list");
+	local card = session.pet.GetAncientCardByGuid(guid)
+	local ctrlSet = GET_CHILD_RECURSIVELY(aframe,"SET_"..card.slot)
+	local lckbtn = GET_CHILD_RECURSIVELY(ctrlSet,"lockbtn"..card.slot)
+	if lckbtn ~= nil then
+		if card.isLock == true then
+			lckbtn:SetText("{#FF0000}{ol}Locked");
+		else
+			lckbtn:SetText("{ol}Lock");
+		end
+	end
+end	
