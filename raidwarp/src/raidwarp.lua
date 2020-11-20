@@ -58,6 +58,10 @@ function RAIDWARP_CMD(command)
 			return
 		end
 	end
+	if string.lower(cmd) == "boruta" then
+		RAIDWARP_BORUTABTN();
+		return
+	end
 	if string.lower(cmd) == "help" then
 		RAIDWARP_HELP();
 		return
@@ -104,7 +108,7 @@ function RAIDWARP_OPENFRAME()
 		frame:SetOffset(g.settings.x, g.settings.y);
 		return
 	else
-		frame:Resize(160,292);
+		frame:Resize(160,322);
 	end
 	frame:SetOffset(g.settings.x, g.settings.y);
 	local i = 0;
@@ -120,10 +124,27 @@ function RAIDWARP_OPENFRAME()
 		rbutton:SetEventScriptArgNumber(ui.LBUTTONUP, v);
 		i = i + 1;
 	end
+	--boruta
+	local rbg = frame:CreateOrGetControl('groupbox', 'Borutabg', 5, (36 + i*31), 150, 30);
+	rbg:SetSkinName('systemmenu_vertical');
+	local rtext = rbg:CreateOrGetControl('richtext', 'Borutatext', 5, 6, 95, 30);
+	rtext:SetText("{ol}" .. "Boruta");
+	local rbutton = rbg:CreateOrGetControl('button', 'Borutabtn', 102, 2, 41, 30);
+	rbutton:SetSkinName("test_red_button");
+	rbutton:SetText("{ol}Warp");
+	rbutton:SetEventScript(ui.LBUTTONUP,"RAIDWARP_BORUTABTN");
 end
 
 function RAIDWARP_WARPBTN(parent, FromctrlSet, argStr, argNum)
 	RAIDWARP_WARP(argNum)
+end
+
+function RAIDWARP_BORUTABTN(parent, FromctrlSet, argStr, argNum)
+	local indunCls = GetClass('GuildEvent', 'GM_BorutosKapas_1');
+	if indunCls ~= nil then
+		local indunClsID = TryGetProp(indunCls, 'ClassID', 0);
+		_BORUTA_ZONE_MOVE_CLICK(indunClsID);
+	end
 end
 
 function RAIDWARP_MINIMIZE()
@@ -163,6 +184,7 @@ function RAIDWARP_HELP()
 	text = text .. "{s18}/rw Ignas{/}{nl} {s16}Astral Tower Closed Quarters (Astral Tower 4F){nl} {nl}";
 	text = text .. "{s18}/rw Skiaclipse{/}{nl} {s16}Tomb of the White Crow (Rasvoy Lake){nl} {nl}";
 	text = text .. "{s18}/rw Moring{/}{nl} {s16}Lepidoptera Junction (Stele Road){nl} {nl}";
-	text = text .. "{s18}/rw Witch{/}{nl} {s16}White Witchs Forest (Stogas Plateau)";
+	text = text .. "{s18}/rw Witch{/}{nl} {s16}White Witchs Forest (Stogas Plateau){nl} {nl}";
+	text = text .. "{s18}/rw Boruta{/}{nl} {s16}Battle in Sulivinas Lair(Vedas Plateau)";
 	return ui.MsgBox(text,"","Nope");
 end
