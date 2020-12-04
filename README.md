@@ -70,6 +70,12 @@ Create a shortcut and chat commands for Dungeons(F10) warp.
 
 /rw to open frame, /rw help for command list.
 
+## Token Warp Chat
+
+/twc mapname to search a map and warp with token travel.
+
+![](https://i.imgur.com/4GUfx9z.jpg)
+
 ## Hide Drop Msg
 
 Hide this silver drop msg:

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uiframe name="tokenwarpchat" x="0" y="0" width="450" height="160">
+	<draw drawnotitlebar="false" drawtitlebar="false"/>
+	<frame title="" fullheight="false" fasthide="true" layout_gravity="center center" margin="0 0 0 0"/>
+	<input moveable="false" hittestframe="true" moveintitlebar="false"/>
+	<layer layerlevel="100"/>
+    <controls>
+		<groupbox name="headerBox" rect="0 0 450 55" margin="0 -15 0 0" layout_gravity="center top" skin="test_socket_topskin" hittest="false"/>
+		<richtext name="headerText" rect="0 0 500 50" parent="headerBox" margin="0 5 0 0" layout_gravity="center center" caption="{@st43}Token Warp{/}" hittest="false"/>
+        <richtext name="searchText" rect="0 0 500 20" margin="0 60 0 0" layout_gravity="center center" caption="{@st43}Search: {/}" hittest="false"/>
+		<button name="warpbtn" rect="0 0 117 41" margin="30 0 0 30" caption="{@st43}WARP{/}" skin="test_red_button" layout_gravity="left bottom" clicksound="button_click_skill_up_OK" oversound="button_over" LBtnUpScp="TOKENWARPCHAT_WARPBTN"/>
+		<button name="closebtn" rect="0 0 80 30" margin="0 0 30 30" caption="{@st42b}{s14}CLOSE{/}" skin="test_red_button" layout_gravity="right bottom" clicksound="button_click_skill_up_OK" oversound="button_over" LBtnUpScp="TOKENWARPCHAT_CLOSEBTN"/>
+	</controls>
+</uiframe>

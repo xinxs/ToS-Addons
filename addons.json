@@ -101,6 +101,22 @@
 			"raidwarp"
 			]
 	},
+    {
+		"name" : "Token Warp Chat",
+		"file" : "tokenwarpchat",
+		"extension" : "ipf",
+		"fileVersion" : "v1.0.2",
+		"releaseTag" : "twc",
+		"unicode" : "⛄",
+		"description" : "/twc mapname to search a map and warp with token travel.",
+		"tags" : [
+			"twc",
+			"token",
+			"warp",
+			"travel",
+            "chat"
+			]
+	},
 	{
 		"name" : "Hide Drop Msg",
 		"file" : "hidemsgdrop",
