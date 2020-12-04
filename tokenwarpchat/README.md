@@ -1,6 +1,6 @@
 # Token Warp Chat
 
-/twc mapname to search a map and warp with token travel.
+**/twc** mapname to search a map and warp with token travel.
 
 1 result: ask if you want to warp
 
