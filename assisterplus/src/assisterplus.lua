@@ -7,7 +7,7 @@ _G["ADDONS"][author][addonName] = _G["ADDONS"][author][addonName] or {}
 local g = _G["ADDONS"][author][addonName]
 local acutil = require('acutil')
 local settingsFileLoc = string.format("../addons/%s/settings.json", string.lower(addonName));
-g.settings = {saves = {}};
+g.settings = {saves = {}, lastset = ""};
 local loaded = false;
 local filterlist = {ison = false, filtertype = "none", argN = -1};
 
@@ -16,8 +16,28 @@ function ASSISTERPLUS_LOAD()
 	local t, err = acutil.loadJSON(settingsFileLoc);
 	if not err then
 		g.settings = t;
+		if g.settings.lastset == nil then
+			g.settings.lastset = "";
+		end
 		loaded = true;
 	end
+end
+
+local function spairs(t, order)
+   local keys = {}
+   for k in pairs(t) do keys[#keys+1] = k end
+   if order then
+        table.sort(keys, function(a,b) return order(t, a, b) end)
+   else
+        table.sort(keys)
+   end
+   local i = 0
+   return function()
+        i = i + 1
+       if keys[i] then
+            return keys[i], t[keys[i]]
+       end
+   end
 end
 
 function ASSISTERPLUS_SAVEBTN()
@@ -39,6 +59,7 @@ function ASSISTERPLUS_SAVESET(setname, frame)
 			g.settings.saves[setname][i+1] = card:GetGuid();
 		end
 	end
+	g.settings.lastset = setname;
 	acutil.saveJSON(settingsFileLoc, g.settings);
 	ASSISTERPLUS_DROPLIST(frame);
 end
@@ -66,7 +87,9 @@ function ASSISTERPLUS_LOADSET()
 			ReserveScript(string.format("REQUEST_SWAP_ANCIENT_CARD(frame,\"%s\",%d)", guid, slot-1), delay);
 			delay = delay + 0.4;
 		end
+		g.settings.lastset = setname;
 	end
+	acutil.saveJSON(settingsFileLoc, g.settings);
 end
 
 function ASSISTERPLUS_DELETEBTN()
@@ -78,6 +101,9 @@ function ASSISTERPLUS_DELETESET()
 	local droplist = GET_CHILD(frame, "ADropList", "ui::CDropList");
 	local setname = tostring(droplist:GetSelItemKey());
 	g.settings.saves[setname] = nil;
+	if g.settings.lastset == setname then
+		g.settings.lastset = "";
+	end
 	acutil.saveJSON(settingsFileLoc, g.settings);
 	ASSISTERPLUS_DROPLIST(frame);
 end
@@ -89,10 +115,22 @@ function ASSISTERPLUS_DROPLIST(frame)
 	DropList:EnableHitTest(1);
 	DropList:ClearItems();
 	if g.settings.saves ~= nil then
-		for k, v in pairs(g.settings.saves) do
-			DropList:AddItem(k, k)
+		local sortlist = {};
+		local cnt = 1;
+		for x in spairs(g.settings.saves, function(t, a, b) return a < b end) do
+			sortlist[cnt] = {};
+			sortlist[cnt] = x;
+			cnt = cnt + 1;
+		end
+
+		for k, v in ipairs(sortlist) do
+			DropList:AddItem(v, v)
 		end
 	end
+	if g.settings.lastset ~= nil then
+		DropList:SelectItemByKey(g.settings.lastset);
+	end
+	
 	--save, delete
 	local deletebtn = frame:CreateOrGetControl('button', 'delbtn', 438, 75, 20, 20);
 	deletebtn:SetText("{#FF0000}{ol}X");
