@@ -293,15 +293,15 @@ function FPSSAVIOR_HIGH()
 
 	graphic.SetDrawActor(100);
 	graphic.SetDrawMonster(100);
-	graphic.EnableFastLoading(0);
-	graphic.EnableBlur(0);
+	--graphic.EnableFastLoading(0);
+	--graphic.EnableBlur(0);
 	graphic.EnableBloom(1);
 	graphic.EnableCharEdge(1);
-	graphic.EnableDepth(1);
+	--graphic.EnableDepth(1);
 	graphic.EnableFXAA(1);
 	graphic.EnableGlow(1);
 	graphic.EnableHighTexture(1);
-	graphic.EnableSharp(0);
+	--graphic.EnableSharp(0);
 	graphic.EnableSoftParticle(1);
 	graphic.EnableWater(1);  
 	imcperfOnOff.EnableIMCEffect(1);
@@ -324,15 +324,15 @@ function FPSSAVIOR_MEDIUM()
 		
 	graphic.SetDrawActor(40);
 	graphic.SetDrawMonster(50);
-	graphic.EnableFastLoading(1);
-	graphic.EnableBlur(0);
+	--graphic.EnableFastLoading(1);
+	--graphic.EnableBlur(0);
 	graphic.EnableBloom(0);
 	graphic.EnableCharEdge(1);
-	graphic.EnableDepth(0);
+	--graphic.EnableDepth(0);
 	graphic.EnableFXAA(1);
 	graphic.EnableGlow(1);
 	graphic.EnableHighTexture(1);
-	graphic.EnableSharp(0);
+	--graphic.EnableSharp(0);
 	graphic.EnableSoftParticle(0);
 	graphic.EnableWater(0); 
 	imcperfOnOff.EnableIMCEffect(1);
@@ -355,15 +355,15 @@ function FPSSAVIOR_LOW()
 		
 	graphic.SetDrawActor(30);
 	graphic.SetDrawMonster(30);
-	graphic.EnableFastLoading(1);
-	graphic.EnableBlur(0);
+	--graphic.EnableFastLoading(1);
+	--graphic.EnableBlur(0);
 	graphic.EnableBloom(0);
 	graphic.EnableCharEdge(0);
-	graphic.EnableDepth(0);
+	--graphic.EnableDepth(0);
 	graphic.EnableFXAA(0);
 	graphic.EnableGlow(1);
 	graphic.EnableHighTexture(0);
-	graphic.EnableSharp(0);
+	--graphic.EnableSharp(0);
 	graphic.EnableSoftParticle(0);
 	graphic.EnableWater(0); 
 	imcperfOnOff.EnableIMCEffect(1);
@@ -386,15 +386,15 @@ function FPSSAVIOR_ULOW()
 		
 	graphic.SetDrawActor(20);
 	graphic.SetDrawMonster(30);
-	graphic.EnableFastLoading(1);
-	graphic.EnableBlur(0);
+	--graphic.EnableFastLoading(1);
+	--graphic.EnableBlur(0);
 	graphic.EnableBloom(0);
 	graphic.EnableCharEdge(0);
-	graphic.EnableDepth(0);
+	--graphic.EnableDepth(0);
 	graphic.EnableFXAA(0);
 	graphic.EnableGlow(0);
 	graphic.EnableHighTexture(0);
-	graphic.EnableSharp(0);
+	--graphic.EnableSharp(0);
 	graphic.EnableSoftParticle(0);
 	graphic.EnableWater(0); 
 	imcperfOnOff.EnableIMCEffect(0);

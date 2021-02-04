@@ -23,3 +23,5 @@ New func: Hide players/summons
 -v2.2.0: low/ultralow sets graphics > low mode to on (lighter textures);
 
 -v2.3.1: Added hide func. Added some new graphics options inside presets. Adjusted presets players draw, since hide func will make the job.
+
+-v2.3.2: Ep13 fix, some old broken graphic options removed. Based on Jabberwock's fix. 
