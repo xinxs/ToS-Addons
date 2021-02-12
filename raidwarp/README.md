@@ -9,3 +9,5 @@ Create a shortcut and chat commands for Dungeons(F10) warp.
 v1.0.2: Withe Witch added
 
 v1.0.3: Boruta added and little fix to prevents the ui closing by ESC press.
+
+v1.0.4: Giltine added

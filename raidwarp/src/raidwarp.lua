@@ -7,7 +7,7 @@ _G["ADDONS"][author][addonName] = _G["ADDONS"][author][addonName] or {}
 local g = _G["ADDONS"][author][addonName]
 g.settings = {x = 500, y = 50, mini = 0, isclose = 0};
 local settingsFileLoc = string.format("../addons/%s/settings.json", string.lower(addonName));
-local RList = {Library = 33, Kugheri = 42, Wastrel = 46, Asio = 507, Ignas = 508, Skiaclipse = 509, Moring = 521, Witch = 617};
+local RList = {Library = 33, Kugheri = 42, Wastrel = 46, Asio = 507, Ignas = 508, Skiaclipse = 509, Moring = 521, Witch = 617, Giltine = 628};
 local acutil = require('acutil');
 
 local function spairs(t, order)
@@ -108,7 +108,7 @@ function RAIDWARP_OPENFRAME()
 		frame:SetOffset(g.settings.x, g.settings.y);
 		return
 	else
-		frame:Resize(160,322);
+		frame:Resize(160,353);
 	end
 	frame:SetOffset(g.settings.x, g.settings.y);
 	local i = 0;
@@ -185,6 +185,7 @@ function RAIDWARP_HELP()
 	text = text .. "{s18}/rw Skiaclipse{/}{nl} {s16}Tomb of the White Crow (Rasvoy Lake){nl} {nl}";
 	text = text .. "{s18}/rw Moring{/}{nl} {s16}Lepidoptera Junction (Stele Road){nl} {nl}";
 	text = text .. "{s18}/rw Witch{/}{nl} {s16}White Witchs Forest (Stogas Plateau){nl} {nl}";
+	text = text .. "{s18}/rw Giltine{/}{nl} {s16}Demonic Sanctuary (Pradzia Temple){nl} {nl}";
 	text = text .. "{s18}/rw Boruta{/}{nl} {s16}Battle in Sulivinas Lair(Vedas Plateau)";
 	return ui.MsgBox(text,"","Nope");
 end
