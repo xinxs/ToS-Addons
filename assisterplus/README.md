@@ -13,3 +13,5 @@ v1.1.1: Fixed for Itos patch 15/09/20, Fusion alert removed (since you cant fusi
 v1.1.2: Fixed for Itos patch 17/11/20.
 
 v1.1.3: Set list organization.
+
+v1.1.4: Fixed for Itos patch 30/03/21.

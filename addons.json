@@ -75,7 +75,7 @@
 		"name" : "Assister Plus",
 		"file" : "assisterplus",
 		"extension" : "ipf",
-		"fileVersion" : "v1.1.3",
+		"fileVersion" : "v1.1.4",
 		"releaseTag" : "assisterplus",
 		"unicode" : "⛄",
 		"description" : "Adds extra functions to the assisters UI.",

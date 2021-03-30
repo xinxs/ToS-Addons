@@ -11,6 +11,12 @@ g.settings = {saves = {}, lastset = ""};
 local loaded = false;
 local filterlist = {ison = false, filtertype = "none", argN = -1};
 
+local ANCIENT_INFO_TAB = 0
+local ANCIENT_COMBINE_TAB = 1
+local ANCIENT_EVOLVE_TAB = 2
+local ANCIENT_PAGE_SIZE = 20
+local ANCIENT_MAIN_SLOT_NUM = 4
+
 function ASSISTERPLUS_LOAD()
 	if loaded == true then return end
 	local t, err = acutil.loadJSON(settingsFileLoc);
@@ -140,28 +146,28 @@ function ASSISTERPLUS_DROPLIST(frame)
 	savebtn:SetEventScript(ui.LBUTTONUP,"ASSISTERPLUS_SAVEBTN");
 
 	--rarityfilter
-	local cIcon = frame:CreateOrGetControl('button', "btnico_1", 230, 647, 18, 24);
+	local cIcon = frame:CreateOrGetControl('button', "btnico_1", 230, 387, 18, 24);
 	cIcon:SetSkinName("test_normal_button");
 	cIcon:SetText(string.format("{img normal_card %d %d}", 18, 24));
 	cIcon:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST_BTN');
 	cIcon:SetEventScriptArgString(ui.LBUTTONDOWN, "rarity");
 	cIcon:SetEventScriptArgNumber(ui.LBUTTONDOWN, 1);
 	
-	cIcon = frame:CreateOrGetControl('button', "btnico_2", 250, 647, 18, 24);
+	cIcon = frame:CreateOrGetControl('button', "btnico_2", 250, 387, 18, 24);
 	cIcon:SetSkinName("test_normal_button");
 	cIcon:SetText(string.format("{img rare_card %d %d}", 18, 24));
 	cIcon:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST_BTN');
 	cIcon:SetEventScriptArgString(ui.LBUTTONDOWN, "rarity");
 	cIcon:SetEventScriptArgNumber(ui.LBUTTONDOWN, 2);
 	
-	cIcon = frame:CreateOrGetControl('button', "btnico_3", 270, 647, 18, 24);
+	cIcon = frame:CreateOrGetControl('button', "btnico_3", 270, 387, 18, 24);
 	cIcon:SetSkinName("test_normal_button");
 	cIcon:SetText(string.format("{img unique_card %d %d}", 18, 24));
 	cIcon:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST_BTN');
 	cIcon:SetEventScriptArgString(ui.LBUTTONDOWN, "rarity");
 	cIcon:SetEventScriptArgNumber(ui.LBUTTONDOWN, 3);
 	
-	cIcon = frame:CreateOrGetControl('button', "btnico_4", 290, 647, 18, 24);
+	cIcon = frame:CreateOrGetControl('button', "btnico_4", 290, 387, 18, 24);
 	cIcon:SetSkinName("test_normal_button");
 	cIcon:SetText(string.format("{img legend_card %d %d}", 18, 24));
 	cIcon:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST_BTN');
@@ -169,21 +175,21 @@ function ASSISTERPLUS_DROPLIST(frame)
 	cIcon:SetEventScriptArgNumber(ui.LBUTTONDOWN, 4);
 	
 	--starfilter
-	local starbtn = frame:CreateOrGetControl('button', 'starbutton_1', 315, 645, 30, 30);
+	local starbtn = frame:CreateOrGetControl('button', 'starbutton_1', 315, 385, 30, 30);
 	starbtn:SetSkinName("test_normal_button");
 	starbtn:SetText(string.format("{img monster_card_starmark %d %d}", 12, 12));
 	starbtn:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST_BTN');
 	starbtn:SetEventScriptArgString(ui.LBUTTONDOWN, "stars");
 	starbtn:SetEventScriptArgNumber(ui.LBUTTONDOWN, 1);
 	
-	starbtn = frame:CreateOrGetControl('button', 'starbutton_2', 339, 645, 30, 30);
+	starbtn = frame:CreateOrGetControl('button', 'starbutton_2', 339, 385, 30, 30);
 	starbtn:SetSkinName("test_normal_button");
 	starbtn:SetText(string.format("{img monster_card_starmark %d %d}", 12, 12) .. string.format("{img monster_card_starmark %d %d}", 12, 12));
 	starbtn:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST_BTN');
 	starbtn:SetEventScriptArgString(ui.LBUTTONDOWN, "stars");
 	starbtn:SetEventScriptArgNumber(ui.LBUTTONDOWN, 2);
 	
-	starbtn = frame:CreateOrGetControl('button', 'starbutton_3', 365, 645, 32, 30);
+	starbtn = frame:CreateOrGetControl('button', 'starbutton_3', 365, 385, 32, 30);
 	starbtn:SetSkinName("test_normal_button");
 	starbtn:SetText(string.format("{img monster_card_starmark %d %d}", 12, 12) .. string.format("{img monster_card_starmark %d %d}", 12, 12) .. string.format("{img monster_card_starmark %d %d}", 12, 12));
 	starbtn:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_FILTERLIST_BTN');
@@ -191,7 +197,7 @@ function ASSISTERPLUS_DROPLIST(frame)
 	starbtn:SetEventScriptArgNumber(ui.LBUTTONDOWN, 3);
 	
 	--allbtn
-	local allbtn = frame:CreateOrGetControl('button', 'allbutton', 415, 644, 40, 32);
+	local allbtn = frame:CreateOrGetControl('button', 'allbutton', 415, 384, 40, 32);
 	allbtn:SetSkinName("test_normal_button");
 	allbtn:SetText("{#BABABA}{ol}ALL");
 	allbtn:SetEventScript(ui.LBUTTONDOWN, 'ASSISTERPLUS_ALLBTN');	
@@ -200,7 +206,7 @@ end
 function ASSISTERPLUS_ALLBTN()
 	local frame = ui.GetFrame("ancient_card_list");
 	filterlist.ison = false;
-	ON_ANCIENT_CARD_RELOAD(frame);
+	INIT_ANCIENT_CARD_LIST_ALL(frame);
 end
 
 function ASSISTERPLUS_LOCKBTN(parent, FromctrlSet, argStr, argNum)
@@ -222,30 +228,25 @@ function ASSISTERPLUS_ON_INIT(addon, frame)
 	acutil.setupHook(ANCIENT_CARD_LIST_OPEN_HOOKED, "ANCIENT_CARD_LIST_OPEN");
 	acutil.setupHook(SET_ANCIENT_CARD_LIST_HOOKED, "SET_ANCIENT_CARD_LIST");
 	--acutil.setupHook(ANCIENT_CARD_COMBINE_CHECK_HOOKED, "ANCIENT_CARD_COMBINE_CHECK");
-	acutil.setupHook(INIT_ANCIENT_CARD_INFO_TAB_HOOKED, "INIT_ANCIENT_CARD_INFO_TAB");
-	acutil.setupHook(ANCIENT_CARD_COMBINE_LIST_LOAD_HOOKED, "ANCIENT_CARD_COMBINE_LIST_LOAD");
+	acutil.setupHook(INIT_ANCIENT_CARD_LIST_ALL_HOOKED, "INIT_ANCIENT_CARD_LIST_ALL");
+	--acutil.setupHook(ANCIENT_CARD_COMBINE_LIST_LOAD_HOOKED, "ANCIENT_CARD_COMBINE_LIST_LOAD");
 end
 
 function ANCIENT_CARD_LIST_OPEN_HOOKED(aframe)
 	local frame = ui.GetFrame("ancient_card_list");
 	local tab = frame:GetChild("tab")
-	AUTO_CAST(tab);
-	if tab ~= nil then
-	tab:SelectTab(0);
-	ANCIENT_CARD_LIST_TAB_CHANGE(frame)
-	end 
-	local ancient_card_num = frame:GetChild('ancient_card_num')
-	ancient_card_num:SetTextByKey("max",ANCIENT_CARD_SLOT_MAX)
-	ANCEINT_PASSIVE_LIST_SET(frame)
-	ANCIENT_SET_COST(frame)
-	local ancient_card_comb_name = GET_CHILD_RECURSIVELY(frame,"ancient_card_comb_name")
-	ancient_card_comb_name:SetTooltipType('ancient_passive')
+    AUTO_CAST(tab);
+    if tab ~= nil then
+        tab:SelectTab(0);
+        ANCIENT_CARD_LIST_TAB_CHANGE(frame)
+    end
 	ASSISTERPLUS_DROPLIST(frame)
 end
 
 function SET_ANCIENT_CARD_LIST_HOOKED(gbox,card,isLockMode)
 	local height = (gbox:GetChildCount()-1) * 51
 	local ctrlSet = gbox:CreateOrGetControlSet("ancient_card_item_list", "SET_" .. card.slot, 0, height);
+	
 	--lock
 	local lockbtn = ctrlSet:CreateOrGetControl('button', "lockbtn".. card.slot, 390, 16, 64, 28);
 	lockbtn:SetSkinName('test_pvp_btn');
@@ -255,224 +256,141 @@ function SET_ANCIENT_CARD_LIST_HOOKED(gbox,card,isLockMode)
 	if card.isLock == true then
 		lockbtn:SetText("{#FF0000}{ol}Locked");
 	end
+
+    --set level
+    local exp = card:GetStrExp();
+    local xpInfo = gePetXP.GetXPInfo(gePetXP.EXP_ANCIENT, tonumber(exp))
+    local level = xpInfo.level
+    local levelText = GET_CHILD_RECURSIVELY(ctrlSet,"ancient_card_level")
+    levelText:SetText("{@st42b}{s16}Lv. "..level.."{/}")
+
+    --set image
+    local monCls = GetClass("Monster", card:GetClassName());
+    local iconName = TryGetProp(monCls, "Icon");
+    local slot = GET_CHILD_RECURSIVELY(ctrlSet,"ancient_card_slot")
+    local image = CreateIcon(slot)
+    image:SetImage(iconName)
 	
-	--set level
-	local exp = card:GetStrExp();
-	local xpInfo = gePetXP.GetXPInfo(gePetXP.EXP_ANCIENT, tonumber(exp))
-	local level = xpInfo.level
-	local levelText = GET_CHILD_RECURSIVELY(ctrlSet,"ancient_card_level")
-	levelText:SetText("{@st42b}{s16}Lv. "..level.."{/}")
+    --set name
+    local nameText = GET_CHILD_RECURSIVELY(ctrlSet,"ancient_card_name")
+    local name = monCls.Name
+    local starStr = ""
+    for i = 1, card.starrank do
+        starStr = starStr ..string.format("{img monster_card_starmark %d %d}", 21, 20)
+    end
+    local ancientCls = GetClass("Ancient_Info",monCls.ClassName)
+    local rarity = ancientCls.Rarity
+    AUTO_CAST(ctrlSet)
+    if rarity == 1 then
+        name = ctrlSet:GetUserConfig("NORMAL_GRADE_TEXT")..name..' '..starStr.."{/}"
+    elseif rarity == 2 then
+        name = ctrlSet:GetUserConfig("MAGIC_GRADE_TEXT")..name..' '..starStr.."{/}" 
+    elseif rarity == 3 then
+        name = ctrlSet:GetUserConfig("UNIQUE_GRADE_TEXT")..name..' '..starStr.."{/}"
+    elseif rarity == 4 then
+        name = ctrlSet:GetUserConfig("LEGEND_GRADE_TEXT")..name..' '..starStr.."{/}"
+    end
+    nameText:SetText(name)
 
-	--set image
-	local monCls = GetClass("Monster", card:GetClassName());
-	local iconName = TryGetProp(monCls, "Icon");
-	local slot = GET_CHILD_RECURSIVELY(ctrlSet,"ancient_card_slot")
-	local image = CreateIcon(slot)
-	image:SetImage(iconName)
+    local racetypeDic = {
+                        Klaida="insect",
+                        Widling="wild",
+                        Velnias="devil",
+                        Forester="plant",
+                        Paramune="variation",
+                        None="melee"
+                    }
+    --set type
+    local type1Slot = GET_CHILD_RECURSIVELY(ctrlSet,"ancient_card_type1_pic")
+    local type1Icon = CreateIcon(type1Slot)
+    type1Icon:SetImage("monster_"..racetypeDic[monCls.RaceType])
+    local type2Slot = GET_CHILD_RECURSIVELY(ctrlSet,"ancient_card_type2_pic")
+    local type2Icon = CreateIcon(type2Slot)
+    type2Icon:SetImage("attribute_"..monCls.Attribute)  
+    
+    --tooltip
+    ctrlSet:SetTooltipType("ancient_card")
+    ctrlSet:SetTooltipStrArg(card:GetGuid())
+    ctrlSet:SetUserValue("ANCIENT_GUID",card:GetGuid())
 
-	--set name
-	local nameText = GET_CHILD_RECURSIVELY(ctrlSet,"ancient_card_name")
-	local name = monCls.Name
-	local starStr = ""
-	for i = 1, card.starrank do
-		starStr = starStr ..string.format("{img monster_card_starmark %d %d}", 21, 20)
+    SET_CARD_LOCK_MODE(ctrlSet,isLockMode)
+    if card.isNew == true then
+        local slot = GET_CHILD_RECURSIVELY(ctrlSet,'ancient_card_slot')
+        slot:SetHeaderImage('new_inventory_icon');
+    end
+    if card.isLock == true then
+        local slot = GET_CHILD_RECURSIVELY(ctrlSet,"ancient_card_slot")
+        local lock = slot:CreateOrGetControlSet('inv_itemlock', "itemlock", 0, 0);
+        lock:SetGravity(ui.RIGHT, ui.TOP);
+        local remove = GET_CHILD_RECURSIVELY(ctrlSet,"sell_btn")
+        remove:SetEnable(0)
 	end
-	local ancientCls = GetClass("Ancient_Info",monCls.ClassName)
-	local rarity = ancientCls.Rarity
-	AUTO_CAST(ctrlSet)
-	if rarity == 1 then
-		name = ctrlSet:GetUserConfig("NORMAL_GRADE_TEXT")..name..' '..starStr.."{/}"
-	elseif rarity == 2 then
-		name = ctrlSet:GetUserConfig("MAGIC_GRADE_TEXT")..name..' '..starStr.."{/}" 
-	elseif rarity == 3 then
-		name = ctrlSet:GetUserConfig("UNIQUE_GRADE_TEXT")..name..' '..starStr.."{/}"
-	elseif rarity == 4 then
-		name = ctrlSet:GetUserConfig("LEGEND_GRADE_TEXT")..name..' '..starStr.."{/}"
+    local pic_bg = GET_CHILD_RECURSIVELY(ctrlSet,"graybg")
+												   
+    if IS_VALID_ANCIENT_CARD(gbox:GetTopParentFrame(),card) == true then
+        pic_bg:ShowWindow(0)
+        ctrlSet:EnableHitTest(1)
+    else
+        pic_bg:ShowWindow(1)
+        local pic = GET_CHILD(pic_bg,"gray")
+        pic:SetAlpha(70)
+        ctrlSet:EnableHitTest(0)
 	end
-	nameText:SetText(name)
+    return ctrlSet
 
-	local racetypeDic = {
-						Klaida="insect",
-						Widling="wild",
-						Velnias="devil",
-						Forester="plant",
-						Paramune="variation",
-						None="melee"
-					}
-	--set type
-	local type1Slot = GET_CHILD_RECURSIVELY(ctrlSet,"ancient_card_type1_pic")
-	local type1Icon = CreateIcon(type1Slot)
-	type1Icon:SetImage("monster_"..racetypeDic[monCls.RaceType])
-
-	local type2Slot = GET_CHILD_RECURSIVELY(ctrlSet,"ancient_card_type2_pic")
-	local type2Icon = CreateIcon(type2Slot)
-	type2Icon:SetImage("attribute_"..monCls.Attribute)	
-	
-	--tooltip
-	ctrlSet:SetTooltipType("ancient_card")
-	ctrlSet:SetTooltipStrArg(card:GetGuid())
-
-	ctrlSet:SetUserValue("ANCIENT_GUID",card:GetGuid())
-
-	SET_CTRL_LOCK_MODE(ctrlSet,isLockMode)
-	if card.isNew == true then
-		local slot = GET_CHILD_RECURSIVELY(ctrlSet,'ancient_card_slot')
-		slot:SetHeaderImage('new_inventory_icon');
-	end
-	return ctrlSet
 end
 
 function ASSISTERPLUS_FILTERLIST_BTN(parent, FromctrlSet, argStr, argNum)
 	local frame = ui.GetFrame("ancient_card_list");
 	local tab = frame:GetChild("tab");
 	AUTO_CAST(tab);
-	local index = tab:GetSelectItemIndex();
-	if index == 0 then
-		ASSISTERPLUS_FILTERLIST_INFO(frame, argStr, argNum);
-	else
-		ASSISTERPLUS_FILTERLIST_COMBINE(frame, argStr, argNum);
-	end
+	--local index = tab:GetSelectItemIndex();
+	ASSISTERPLUS_LIST_ALL(frame, argStr, argNum)
 end
 
-function ASSISTERPLUS_FILTERLIST_INFO(frame, argStr, argNum)
+function ASSISTERPLUS_LIST_ALL(frame, argStr, argNum)
 	filterlist.ison = true;
 	filterlist.filtertype = argStr;
 	filterlist.argN = argNum;
 	INIT_ANCIENT_CARD_SLOTS(frame,0)
 
-	local ancient_card_list_Gbox =  GET_CHILD_RECURSIVELY(frame,'ancient_card_list_Gbox')
-	if ancient_card_list_Gbox == nil then
-		return;
-	end
-	ancient_card_list_Gbox:RemoveAllChild()
-	ancient_card_list_Gbox:SetEventScript(ui.DROP,"ANCIENT_CARD_SWAP_ON_DROP")
-	local cnt = session.ancient.GetAncientCardCount();
-
-	for i = 0,cnt-1 do
-		local card = session.ancient.GetAncientCardByIndex(i);
-		if card.slot > 3 then
-			if argStr == "rarity" and argNum == card.rarity then
-				local ctrlSet = INIT_ANCIENT_CARD_LIST(frame,card)
-				ctrlSet:SetEventScript(ui.DROP,"ANCIENT_CARD_SWAP_ON_DROP")
-			elseif argStr == "stars" and argNum == card.starrank then
-				local ctrlSet = INIT_ANCIENT_CARD_LIST(frame,card)
-				ctrlSet:SetEventScript(ui.DROP,"ANCIENT_CARD_SWAP_ON_DROP")
-			end
-		end
-	end
-
-	local ancient_card_num = frame:GetChild('ancient_card_num')
-	ancient_card_num:SetTextByKey("count",cnt)
-	ANCEINT_PASSIVE_LIST_SET(frame)
-	ANCIENT_SET_COST(frame)
-end
-
-function ASSISTERPLUS_FILTERLIST_COMBINE(frame, argStr, argNum)
-	filterlist.ison = true;
-	filterlist.filtertype = argStr;
-	filterlist.argN = argNum;
-	local ancient_card_list_Gbox = GET_CHILD_RECURSIVELY(frame,'ancient_card_list_Gbox')
-	ancient_card_list_Gbox:RemoveAllChild()
-	ancient_card_list_Gbox:SetEventScript(ui.DROP,"ANCIENT_CARD_SLOT_POP_COMBINE_BY_DROP")
-	local slotBox = GET_CHILD_RECURSIVELY(frame,'ancient_card_slot_Gbox')
-	local guidList = {}
-	local index = 1
-	for i = 0,3 do
-		local ctrl = slotBox:GetChild("COMBINE_"..i)
-		local guid = ctrl:GetUserValue("ANCIENT_GUID")
-		if guid ~= "None" then
-			guidList[index] = guid
-			index = index + 1
-		end
-	end
-
+	frame = frame:GetTopParentFrame()
+    local pageCtrl = GET_CHILD_RECURSIVELY(frame,"card_page_control")
+    local page = pageCtrl:GetCurPage()
+    local ancient_card_list_Gbox = GET_CHILD_RECURSIVELY(frame,"ancient_card_list_Gbox")
+    ancient_card_list_Gbox:RemoveAllChild()
 	local count = session.ancient.GetAncientCardCount()
-	for i = 0,count-1 do
-		local card = session.ancient.GetAncientCardByIndex(i)
-		local isSelected = false;
-		for i = 1,#guidList do
-			if guidList[i] == card:GetGuid() then
-				isSelected = true;
-				break;
-			end
-		end
-		if card.slot >= 4 and isSelected == false then
-			if argStr == "rarity" and argNum == card.rarity then
-				local ctrlSet = INIT_ANCIENT_CARD_LIST(frame,card)
-				ctrlSet:SetEventScript(ui.DROP,"ANCIENT_CARD_SLOT_POP_COMBINE_BY_DROP")
-			elseif argStr == "stars" and argNum == card.starrank then
-				local ctrlSet = INIT_ANCIENT_CARD_LIST(frame,card)
-				ctrlSet:SetEventScript(ui.DROP,"ANCIENT_CARD_SLOT_POP_COMBINE_BY_DROP")
-			end
-		end
-	end
+    for i = 0, count-1 do
+        local card = session.ancient.GetAncientCardByIndex(i)
+        if card == nil then
+            break
+        end
+		if argStr == "rarity" and argNum == card.rarity then
+			local ctrlSet = INIT_ANCIENT_CARD_LIST(frame,card)
+		elseif argStr == "stars" and argNum == card.starrank then
+			local ctrlSet = INIT_ANCIENT_CARD_LIST(frame,card)
+		end    
+    end
 end
 
-function INIT_ANCIENT_CARD_INFO_TAB_HOOKED(frame)
+function INIT_ANCIENT_CARD_LIST_ALL_HOOKED(frame,func)
 	if filterlist.ison then
-		ASSISTERPLUS_FILTERLIST_INFO(frame, filterlist.filtertype, filterlist.argN);
+		ASSISTERPLUS_LIST_ALL(frame, filterlist.filtertype, filterlist.argN);
 		return
 	end
-	INIT_ANCIENT_CARD_SLOTS(frame,0)
-
-	local ancient_card_list_Gbox =  GET_CHILD_RECURSIVELY(frame,'ancient_card_list_Gbox')
-	if ancient_card_list_Gbox == nil then
-		return;
-	end
-	ancient_card_list_Gbox:RemoveAllChild()
-	ancient_card_list_Gbox:SetEventScript(ui.DROP,"ANCIENT_CARD_SWAP_ON_DROP")
-	local cnt = session.ancient.GetAncientCardCount()
-
-	local height = 0
-	for i = 0,cnt-1 do
-		local card = session.ancient.GetAncientCardByIndex(i)
-		if card.slot > 3 then
-			local ctrlSet = INIT_ANCIENT_CARD_LIST(frame,card)
-			ctrlSet:SetEventScript(ui.DROP,"ANCIENT_CARD_SWAP_ON_DROP")
-		end
-	end
-
-	local ancient_card_num = frame:GetChild('ancient_card_num')
-	ancient_card_num:SetTextByKey("count",cnt)
-	ANCEINT_PASSIVE_LIST_SET(frame)
-	ANCIENT_SET_COST(frame)
-end
-
-function ANCIENT_CARD_COMBINE_LIST_LOAD_HOOKED(frame)
-	if filterlist.ison then
-		ASSISTERPLUS_FILTERLIST_COMBINE(frame, filterlist.filtertype, filterlist.argN);
-		return
-	end
-	local ancient_card_list_Gbox = GET_CHILD_RECURSIVELY(frame,'ancient_card_list_Gbox')
-	ancient_card_list_Gbox:RemoveAllChild()
-	ancient_card_list_Gbox:SetEventScript(ui.DROP,"ANCIENT_CARD_SLOT_POP_COMBINE_BY_DROP")
-	local slotBox = GET_CHILD_RECURSIVELY(frame,'ancient_card_slot_Gbox')
-	local guidList = {}
-	local index = 1
-	for i = 0,3 do
-		local ctrl = slotBox:GetChild("COMBINE_"..i)
-		local guid = ctrl:GetUserValue("ANCIENT_GUID")
-		if guid ~= "None" then
-			guidList[index] = guid
-			index = index + 1
-		end
-	end
-
-	local count = session.ancient.GetAncientCardCount()
-	for i = 0,count-1 do
-		local card = session.ancient.GetAncientCardByIndex(i)
-		local isSelected = false;
-		for i = 1,#guidList do
-			if guidList[i] == card:GetGuid() then
-				isSelected = true;
-				break;
-			end
-		end
-		if card.slot >= 4 and isSelected == false then
-			local ctrlSet = INIT_ANCIENT_CARD_LIST(frame,card)
-			ctrlSet:SetEventScript(ui.DROP,"ANCIENT_CARD_SLOT_POP_COMBINE_BY_DROP")
-		end
-	end
+	
+	frame = frame:GetTopParentFrame()
+    local pageCtrl = GET_CHILD_RECURSIVELY(frame,"card_page_control")
+    local page = pageCtrl:GetCurPage()
+    local ancient_card_list_Gbox = GET_CHILD_RECURSIVELY(frame,"ancient_card_list_Gbox")
+    ancient_card_list_Gbox:RemoveAllChild()
+    for i = page*ANCIENT_PAGE_SIZE, (page+1)*ANCIENT_PAGE_SIZE-1 do
+        local card = session.ancient.GetAncientCardByIndex(i)
+        if card == nil then
+            break
+        end
+        local ctrlSet = INIT_ANCIENT_CARD_LIST(frame,card)
+    end
 end
 
 function ON_ASSISTERPLUS_LOCK(frame,msg,guid)
