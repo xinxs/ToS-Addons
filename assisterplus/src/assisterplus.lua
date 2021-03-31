@@ -344,7 +344,8 @@ function ASSISTERPLUS_FILTERLIST_BTN(parent, FromctrlSet, argStr, argNum)
 	local frame = ui.GetFrame("ancient_card_list");
 	local tab = frame:GetChild("tab");
 	AUTO_CAST(tab);
-	--local index = tab:GetSelectItemIndex();
+	local index = tab:GetSelectItemIndex();
+	INIT_ANCIENT_CARD_SLOTS(frame,index)
 	ASSISTERPLUS_LIST_ALL(frame, argStr, argNum)
 end
 
@@ -352,7 +353,7 @@ function ASSISTERPLUS_LIST_ALL(frame, argStr, argNum)
 	filterlist.ison = true;
 	filterlist.filtertype = argStr;
 	filterlist.argN = argNum;
-	INIT_ANCIENT_CARD_SLOTS(frame,0)
+	--INIT_ANCIENT_CARD_SLOTS(frame,0)
 
 	frame = frame:GetTopParentFrame()
     local pageCtrl = GET_CHILD_RECURSIVELY(frame,"card_page_control")

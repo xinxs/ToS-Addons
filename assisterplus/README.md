@@ -15,3 +15,5 @@ v1.1.2: Fixed for Itos patch 17/11/20.
 v1.1.3: Set list organization.
 
 v1.1.4: Fixed for Itos patch 30/03/21.
+
+v1.1.5: Little fix on filter list, but maybe not 100% yet.
