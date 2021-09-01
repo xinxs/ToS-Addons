@@ -6,8 +6,8 @@ _G["ADDONS"][author] = _G["ADDONS"][author] or {}
 _G["ADDONS"][author][addonName] = _G["ADDONS"][author][addonName] or {}
 local g = _G["ADDONS"][author][addonName]
 g.settings = {x = 500, y = 50, mini = 0, isclose = 0};
-local settingsFileLoc = string.format("../addons/%s/settings.json", string.lower(addonName));
-local RList = {Library = 33, Kugheri = 42, Wastrel = 46, Asio = 507, Ignas = 508, Skiaclipse = 509, Moring = 521, Witch = 617, Giltine = 628};
+local settingsFileLoc = string.format("%s/settings.json", string.lower(addonName));
+local RList = {ET = 50, Velcoffer = 58, Skiaclipse = 510, Moring = 522, Witch = 620, Giltine = 628, Vasilisa = 655};
 local acutil = require('acutil');
 
 local function spairs(t, order)
@@ -28,7 +28,7 @@ local function spairs(t, order)
 end
 
 function RAIDWARP_LOAD()
-	local t, err = acutil.loadJSON(settingsFileLoc);
+	local t, err = acutil.loadJSONX(settingsFileLoc);
 	if not err then
 		g.settings = t;
 	end
@@ -48,7 +48,7 @@ function RAIDWARP_CMD(command)
 		cmd = table.remove(command, 1);
 	else
 		g.settings.isclose = 0;
-		acutil.saveJSON(settingsFileLoc, g.settings);
+		acutil.saveJSONX(settingsFileLoc, g.settings);
 		RAIDWARP_OPENFRAME();
 		return
 	end
@@ -108,7 +108,7 @@ function RAIDWARP_OPENFRAME()
 		frame:SetOffset(g.settings.x, g.settings.y);
 		return
 	else
-		frame:Resize(160,353);
+		frame:Resize(160,292);
 	end
 	frame:SetOffset(g.settings.x, g.settings.y);
 	local i = 0;
@@ -157,35 +157,33 @@ function RAIDWARP_MINIMIZE()
 		g.settings.mini = 0;
 		RAIDWARP_OPENFRAME()
 	end
-	acutil.saveJSON(settingsFileLoc, g.settings);
+	acutil.saveJSONX(settingsFileLoc, g.settings);
 end
 
 function RAIDWARP_CLOSEFRAME()
 	local frame = ui.GetFrame('raidwarp');
 	g.settings.isclose = 1;
 	frame:ShowWindow(0);
-	acutil.saveJSON(settingsFileLoc, g.settings);
+	acutil.saveJSONX(settingsFileLoc, g.settings);
 end
 
 function RAIDWARP_MOVEFRAME()
 	local frame = ui.GetFrame("raidwarp");
 	g.settings.x = frame:GetX();
 	g.settings.y = frame:GetY();
-	acutil.saveJSON(settingsFileLoc, g.settings);
+	acutil.saveJSONX(settingsFileLoc, g.settings);
 end
 
 function RAIDWARP_HELP()
 	local text = "";
 	text = "{s18}/rw{/}{/}{nl} {s16}Open Frame{nl} {nl}";
-	text = text .. "{s18}/rw Library{/}{nl} {s16}Former Fantasy Library (Zima Suecourt){nl} {nl}";
-	text = text .. "{s18}/rw Kugheri{/}{nl} {s16}The First Refuge (Nobreer Forest){nl} {nl}";
-	text = text .. "{s18}/rw Wastrel{/}{nl} {s16}Magic Research Facility (Starry Town){nl} {nl}";
-	text = text .. "{s18}/rw Asio{/}{nl} {s16}Asiomage Testing Grounds (Frienel Memorial){nl} {nl}";
-	text = text .. "{s18}/rw Ignas{/}{nl} {s16}Astral Tower Closed Quarters (Astral Tower 4F){nl} {nl}";
+	text = text .. "{s18}/rw ET{/}{nl} {s16}Earth Tower(Istora Ruins){nl} {nl}";
+	text = text .. "{s18}/rw Velcoffer{/}{nl} {s16}Velcoffer Nest (Tevhrin Stalactite 5){nl} {nl}";
 	text = text .. "{s18}/rw Skiaclipse{/}{nl} {s16}Tomb of the White Crow (Rasvoy Lake){nl} {nl}";
 	text = text .. "{s18}/rw Moring{/}{nl} {s16}Lepidoptera Junction (Stele Road){nl} {nl}";
 	text = text .. "{s18}/rw Witch{/}{nl} {s16}White Witchs Forest (Stogas Plateau){nl} {nl}";
 	text = text .. "{s18}/rw Giltine{/}{nl} {s16}Demonic Sanctuary (Pradzia Temple){nl} {nl}";
+	text = text .. "{s18}/rw Vasilisa{/}{nl} {s16}Saints Sacellum (Woods of the Linked Bridges){nl} {nl}";
 	text = text .. "{s18}/rw Boruta{/}{nl} {s16}Battle in Sulivinas Lair(Vedas Plateau)";
 	return ui.MsgBox(text,"","Nope");
 end
